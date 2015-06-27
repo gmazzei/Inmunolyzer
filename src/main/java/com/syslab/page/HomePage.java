@@ -4,16 +4,15 @@ import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import com.syslab.service.LoginService;
+import com.syslab.service.UserService;
 
 public class HomePage extends WebPage {
 	
 	@SpringBean
-	private LoginService loginService;
+	private UserService userService;
 	
 	public HomePage() {
-		
-		add(new Label("message", loginService.toString()));
-		
+		add(new Label("message", userService.getAll().size()));
     }
+	
 }
