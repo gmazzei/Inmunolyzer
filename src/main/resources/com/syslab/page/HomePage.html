@@ -1,21 +1,25 @@
-<!DOCTYPE html>
-<html xmlns:wicket="http://wicket.apache.org">
-	<head>
-		<meta charset="utf-8" />
-		<title>Inmunolyzer</title>
-		<link href='http://fonts.googleapis.com/css?family=Yanone+Kaffeesatz:regular,bold' rel='stylesheet' type='text/css' />
-		<link rel="stylesheet" href="style.css" type="text/css" media="screen" title="Stylesheet" />
-		<link rel="stylesheet" href="ezdz/jquery.ezdz.css" type="text/css" media="screen" title="Stylesheet" />
-	</head>
-	<body>		
+<wicket:head>
+	<meta charset="utf-8" />
+	<title>Inmunolyzer</title>
+	<link href='http://fonts.googleapis.com/css?family=Yanone+Kaffeesatz:regular,bold' rel='stylesheet' type='text/css' />
+	<link rel="stylesheet" href="style.css" type="text/css" media="screen" title="Stylesheet" />
+	<link rel="stylesheet" href="ezdz/jquery.ezdz.css" type="text/css"
+	media="screen" title="Stylesheet" />
+</wicket:head>
+
+<wicket:extend xmlns:wicket="http://wicket.apache.org">
+	
+	<form wicket:id="form">
+		<input type="file" wicket:id="fileUploader">
+		<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+		<script src="ezdz/jquery.ezdz.js"></script>
+		<script type="text/javascript" src="ezdz/template.js"></script>
+		<input wicket:id="submit" type="submit" value="Analizar Imagen">
+	</form>
+	
+	<div>
+		<label for="resultValue">Resultado:</label>
+		<label id="resultValue" wicket:id="resultValue"></label>
+	</div>
 		
-		<form wicket:id="form">
-			<input type="file" wicket:id="fileUploader">
-			<script src="http://code.jquery.com/jquery-latest.min.js"></script>
-			<script src="ezdz/jquery.ezdz.js"></script>
-			<script type="text/javascript" src ="ezdz/template.js"></script>
-			<input wicket:id="submit" type="submit">
-		</form>
-		
-	</body>
-</html>
+</wicket:extend>

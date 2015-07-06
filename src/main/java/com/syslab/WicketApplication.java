@@ -4,6 +4,7 @@ import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 
+import com.syslab.page.BasePage;
 import com.syslab.page.HomePage;
 import com.syslab.page.LoginPage;
 
@@ -23,6 +24,7 @@ public class WicketApplication extends WebApplication {
 		
 		this.mountPage("LoginPage", LoginPage.class);
 		this.mountPage("HomePage", HomePage.class);
+		this.mountPage("BasePage", BasePage.class);
 		
 	}
 	

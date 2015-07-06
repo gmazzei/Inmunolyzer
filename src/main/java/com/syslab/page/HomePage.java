@@ -2,7 +2,6 @@ package com.syslab.page;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
-import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.upload.FileUpload;
@@ -10,36 +9,46 @@ import org.apache.wicket.markup.html.form.upload.FileUploadField;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import com.syslab.service.UserService;
+import com.syslab.imageAnalisis.ImageAnalizer;
 
-public class HomePage extends WebPage {
-	
+public class HomePage extends BasePage {
+		
 	@SpringBean
-	private UserService userService;
+	private ImageAnalizer imageAnalizer;
 	
 	public HomePage() {
 		
 		Form form = new Form("form");
-		add(form);
+		this.add(form);
 		
 		final FileUploadField fileUploader = new FileUploadField("fileUploader");
 		fileUploader.setOutputMarkupId(true);
 		form.add(fileUploader);
 		
-		AjaxButton ajaxButton = new AjaxButton("submit", Model.of("Analizar")) {
+		final Label resultValueField = new Label("resultValue");
+		resultValueField.setDefaultModel(Model.of(""));
+		resultValueField.setOutputMarkupId(true);
+		this.add(resultValueField);
+		
+		
+		AjaxButton ajaxButton = new AjaxButton("submit") {
 
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+				
 				FileUpload fileUpload = fileUploader.getFileUpload();
 				byte[] fileBytes = fileUpload.getBytes();
+				Double result = imageAnalizer.analize(fileBytes);
 				
-				//TODO: Analize image
+				resultValueField.setDefaultModelObject(result.toString());
+				target.add(resultValueField);
 				
 				super.onSubmit(target, form);
 			}
 			
 		};
 		form.add(ajaxButton);
+		
     }
 	
 }
