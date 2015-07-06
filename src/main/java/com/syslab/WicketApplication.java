@@ -19,7 +19,8 @@ public class WicketApplication extends WebApplication {
 	@Override
 	public void init() {
 		super.init();
-
+		
+		getDebugSettings().setAjaxDebugModeEnabled(false); 
 		getComponentInstantiationListeners().add(new SpringComponentInjector(this));
 		
 		this.mountPage("LoginPage", LoginPage.class);

@@ -26,13 +26,13 @@ public class ImageAnalisisPage extends BasePage {
 		form.add(fileUploader);
 		
 		final Label resultValueField = new Label("resultValue");
-		resultValueField.setDefaultModel(Model.of(""));
+		resultValueField.setDefaultModel(Model.of(new String()));
 		resultValueField.setOutputMarkupId(true);
 		this.add(resultValueField);
 		
 		
 		AjaxButton ajaxButton = new AjaxButton("submit") {
-
+						
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
 				
@@ -47,6 +47,7 @@ public class ImageAnalisisPage extends BasePage {
 			}
 			
 		};
+		
 		form.add(ajaxButton);
 		
     }
