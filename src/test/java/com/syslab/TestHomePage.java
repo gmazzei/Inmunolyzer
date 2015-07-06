@@ -4,7 +4,7 @@ import org.apache.wicket.util.tester.WicketTester;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.syslab.page.HomePage;
+import com.syslab.page.ImageAnalisisPage;
 
 /**
  * Simple test using the WicketTester
@@ -23,9 +23,9 @@ public class TestHomePage
 	public void homepageRendersSuccessfully()
 	{
 		//start and render the test page
-		tester.startPage(HomePage.class);
+		tester.startPage(ImageAnalisisPage.class);
 
 		//assert rendered page class
-		tester.assertRenderedPage(HomePage.class);
+		tester.assertRenderedPage(ImageAnalisisPage.class);
 	}
 }

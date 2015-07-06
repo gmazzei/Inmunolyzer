@@ -11,12 +11,12 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.syslab.imageAnalisis.ImageAnalizer;
 
-public class HomePage extends BasePage {
+public class ImageAnalisisPage extends BasePage {
 		
 	@SpringBean
 	private ImageAnalizer imageAnalizer;
 	
-	public HomePage() {
+	public ImageAnalisisPage() {
 		
 		Form form = new Form("form");
 		this.add(form);
