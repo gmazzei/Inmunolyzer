@@ -13,3 +13,7 @@ Pasos para levantar el proyecto localmente:
 3) Levantar Jetty
 
 <code>mvn jetty:run</code>
+
+4) Ingresar desde el browser:  
+
+<a href="http://localhost:8080">http://localhost:8080</a>
