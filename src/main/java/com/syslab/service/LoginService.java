@@ -1,12 +1,20 @@
 package com.syslab.service;
 
+import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
 import org.springframework.stereotype.Service;
 
 @Service
 public class LoginService  {
 	
+	
 	public boolean login(String username, String password) {
-		return true; //Hardcodeado
+		AuthenticatedWebSession session = AuthenticatedWebSession.get();
+		
+		if (session.signIn(username, password)) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
 }

@@ -10,11 +10,15 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.syslab.service.LoginService;
+import com.syslab.service.UserService;
 
 public class LoginPage extends WebPage {
 	
 	@SpringBean
 	private LoginService loginService;
+	
+	@SpringBean
+	private UserService userService;
 	
 	public LoginPage() {
 		

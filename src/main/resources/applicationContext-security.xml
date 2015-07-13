@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+	xmlns:beans="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+                    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                    http://www.springframework.org/schema/security 
+                    http://www.springframework.org/schema/security/spring-security-3.2.xsd">
+
+	<http use-expressions="true" create-session="never" auto-config="true">
+		<intercept-url pattern="/LoginPage" access="permitAll" />
+		<intercept-url pattern="/ImageAnalisisPage*" access="isAuthenticated()" />
+		<form-login login-page="/LoginPage" username-parameter="username" password-parameter="password"/>
+	</http>
+	
+	<beans:bean id="inmunolyzerAuthenticationProvider" class="com.syslab.security.InmunolyzerAuthenticationProvider"></beans:bean>
+	
+	<authentication-manager alias="authenticationManager">
+       	<authentication-provider ref="inmunolyzerAuthenticationProvider" />
+    </authentication-manager>
+
+	<!-- This filter is responsible for storing the SecurityContextHolder between requests. Also see SecureWebSession.authenticate(). -->
+	<beans:bean id="securityContextPersistenceFilter" class="org.springframework.security.web.context.SecurityContextPersistenceFilter" />
+
+</beans:beans>   

@@ -29,10 +29,20 @@
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
 	
+	<filter>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+	</filter>
+	
 	<context-param>
 	   <param-name>contextConfigLocation</param-name>
 	   <param-value>classpath:applicationContext.xml</param-value>
 	</context-param>
+	
+	<filter-mapping>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
 	
 	<filter-mapping>
 		<filter-name>wicket.Inmunolyzer</filter-name>
