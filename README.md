@@ -28,7 +28,7 @@ Pasos para instalar MySQL en Linux:
 <br>
 <code>mysql -uroot -p</code>
 <br>
-<code>SET PASSWORD FOR 'root'@'localhost' = PASSWORD('root');</code>
+<code>SET PASSWORD FOR 'xxxx'@'localhost' = PASSWORD('xxxx');</code> (Según el usuario y password que quieran usar)
 <br>
 
 Ahora debemos correr el archivo initdb.sql y estaremos listos para levantar el sistema con base de datos.
