@@ -17,3 +17,18 @@ Pasos para levantar el proyecto localmente:
 4) Ingresar desde el browser:  
 
 <a href="http://localhost:8080">http://localhost:8080</a>
+
+--
+
+
+<h4>Notas adicionales</h4>
+Pasos para instalar MySQL en Linux:
+
+<code>sudo apt-get install mysql-server-5.6</code>
+<br>
+<code>mysql -uroot -p</code>
+<br>
+<code>SET PASSWORD FOR 'root'@'localhost' = PASSWORD('root');</code>
+<br>
+
+Ahora debemos correr el archivo initdb.sql y estaremos listos para levantar el sistema con base de datos.
