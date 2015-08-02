@@ -1,4 +1,4 @@
-<wicket:head>
+<wicket:head xmlns:wicket="http://wicket.apache.org">
 	<meta charset="utf-8" />
 	<title>Inmunolyzer - Image Analisis</title>
 	<link rel="stylesheet" href="ezdz/jquery.ezdz.css" type="text/css" media="screen" title="Stylesheet" />
@@ -16,6 +16,7 @@
 	<div class="row">
 		<div class="col-lg-12">
 			<form wicket:id="form">
+				<select wicket:id="technique"></select>
 				<input type="file" wicket:id="fileUploader">
 				<script src="http://code.jquery.com/jquery-latest.min.js"></script>
 				<script src="ezdz/jquery.ezdz.js"></script>
@@ -26,7 +27,9 @@
 			<div class="text-center">
 				<label for="resultValue">Resultado:</label>
 				<label id="resultValue" wicket:id="resultValue"></label>
+				<div wicket:id="feedbackPanel"></div>
 			</div>
+			
 		</div>
 	</div>
 	

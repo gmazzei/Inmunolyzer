@@ -26,6 +26,9 @@ public class Diagnosis implements Serializable {
 	@Column(name = "description")
 	private String description;
 	
+	@Column(name = "technique")
+	private Technique technique;
+	
 	@Transient
 	private byte[] image;
 	
@@ -44,7 +47,7 @@ public class Diagnosis implements Serializable {
 	}
 	
 	
-	//Getters & Setters
+	//Getters & Setters	
 	
 	public Integer getId() {
 		return id;
@@ -68,6 +71,14 @@ public class Diagnosis implements Serializable {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public Technique getTechnique() {
+		return technique;
+	}
+
+	public void setTechnique(Technique technique) {
+		this.technique = technique;
 	}
 
 	public byte[] getImage() {
