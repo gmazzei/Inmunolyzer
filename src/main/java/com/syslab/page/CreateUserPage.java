@@ -63,7 +63,9 @@ public class CreateUserPage extends BasePage {
 			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
 				User user = (User) form.getModelObject();
 				userService.save(user);
-				setResponsePage(ImageAnalisisPage.class);
+				PageParameters params = new PageParameters();
+				params.add("entityId", user.getId());
+				setResponsePage(ShowUserPage.class, params);
 			}
 
 			@Override

@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.apache.wicket.markup.html.form.upload.FileUpload;
+
 import com.google.gson.Gson;
 
 @Entity
@@ -28,9 +30,6 @@ public class Diagnosis implements Serializable {
 	
 	@Column(name = "technique")
 	private Technique technique;
-	
-	@Transient
-	private byte[] image;
 	
 	@Column(name = "result")
 	private Double result;
@@ -79,14 +78,6 @@ public class Diagnosis implements Serializable {
 
 	public void setTechnique(Technique technique) {
 		this.technique = technique;
-	}
-
-	public byte[] getImage() {
-		return image;
-	}
-
-	public void setImage(byte[] image) {
-		this.image = image;
 	}
 
 	public Double getResult() {

@@ -1,3 +1,26 @@
-<wicket:extend xmlns:wicket="http://wicket.apache.org">
+<wicket:head xmlns:wicket="http://wicket.apache.org">
+	<meta charset="utf-8" />
+	<title>Inmunolyzer - Create Diagnosis</title>
+	<link rel="stylesheet" href="ezdz/jquery.ezdz.css" type="text/css" media="screen" title="Stylesheet" />
+</wicket:head>
 
+<wicket:extend xmlns:wicket="http://wicket.apache.org">
+	
+	<form wicket:id="form">
+		<input type="text" wicket:id="name" placeholder="Name">
+		<textarea wicket:id="description" rows="4" cols="50" placeholder="Description"></textarea>
+		<select wicket:id="technique"></select>
+		
+		<input type="file" wicket:id="image">
+		<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+		<script src="ezdz/jquery.ezdz.js"></script>
+		<script type="text/javascript" src="ezdz/template.js"></script>
+		
+		
+		<input type="submit" wicket:id="submitButton">	
+	</form>
+	
+	<div wicket:id="feedbackPanel"></div>
+	
+	
 </wicket:extend>
