@@ -30,4 +30,8 @@ public class UserService {
 		userRepository.delete(user);
 	}
 	
+	public List<User> findAllByUsernameContaining(String username) {
+		return userRepository.findAllByUsernameContainingOrderByUsernameAsc(username);
+	}
+	
 }

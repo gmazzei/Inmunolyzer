@@ -3,9 +3,12 @@ package com.syslab.page;
 import java.util.List;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.IModel;
@@ -13,6 +16,7 @@ import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.springframework.util.StringUtils;
 
 import com.syslab.entity.User;
 import com.syslab.service.UserService;
@@ -24,15 +28,37 @@ public class UserListPage extends BasePage {
 		
 	public UserListPage() {
 		
+		//Create Button
+		add(new BookmarkablePageLink<CreateUserPage>("create", CreateUserPage.class));
+		
 		final WebMarkupContainer container = new WebMarkupContainer("container");
 		container.setOutputMarkupId(true);
 		add(container);
 		
+		
+		//Search Field
+		final TextField<String> searchField = new TextField<String>("search", Model.of(new String()));
+		searchField.add(new AjaxFormComponentUpdatingBehavior("onkeyup") {
+			@Override
+			protected void onUpdate(AjaxRequestTarget target) {
+				target.add(container);
+			}
+		});
+		add(searchField);
+		
+		
+		
+		//Table
 		IModel<List<User>> model = new LoadableDetachableModel<List<User>>() {
 
 			@Override
 			protected List<User> load() {
-				return userService.getAll();
+				String username = searchField.getModelObject();
+				if (StringUtils.isEmpty(username)) {
+					return userService.getAll();
+				} else {
+					return userService.findAllByUsernameContaining(username);
+				}
 			}
 		};
 		

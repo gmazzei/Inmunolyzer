@@ -8,10 +8,15 @@
 
 	<http use-expressions="true" create-session="never" auto-config="true">
 		<intercept-url pattern="/LoginPage" access="permitAll" />
+		<intercept-url pattern="/ErrorPage" access="permitAll" />
 		<intercept-url pattern="/ImageAnalisisPage*" access="isAuthenticated()" />
+		<intercept-url pattern="/DiagnosisListPage*" access="isAuthenticated()" />
+		<intercept-url pattern="/ShowDiagnosisPage*" access="isAuthenticated()" />
+		<intercept-url pattern="/CreateDiagnosisPage*" access="isAuthenticated()" />
 		<intercept-url pattern="/UserListPage*" access="isAuthenticated()" />
 		<intercept-url pattern="/ShowUserPage*" access="isAuthenticated()" />
 		<intercept-url pattern="/CreateUserPage*" access="isAuthenticated()" />
+		<intercept-url pattern="/StatisticsPage*" access="isAuthenticated()" />
 		<form-login login-page="/LoginPage" username-parameter="username" password-parameter="password"/>
 	</http>
 	

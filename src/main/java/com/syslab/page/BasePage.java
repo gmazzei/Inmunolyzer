@@ -4,10 +4,10 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import com.mysql.jdbc.log.LogUtils;
 import com.syslab.service.LoginService;
 
 public abstract class BasePage extends WebPage {
@@ -16,6 +16,12 @@ public abstract class BasePage extends WebPage {
 	protected LoginService loginService;
 	
 	public BasePage() {
+		buildUserMenu();
+		buildSideBar();	
+	}
+	
+	
+	protected void buildUserMenu() {
 		String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
 		add(new Label("menu-username", username));
 		
@@ -28,6 +34,13 @@ public abstract class BasePage extends WebPage {
 		};
 		
 		add(logoutButton);
+	}
+	
+	protected void buildSideBar() {
+		add(new BookmarkablePageLink<ImageAnalisisPage>("sidebar-image-analisis", ImageAnalisisPage.class));
+		add(new BookmarkablePageLink<DiagnosisListPage>("sidebar-diagnosis", DiagnosisListPage.class));
+		add(new BookmarkablePageLink<UserListPage>("sidebar-users", UserListPage.class));
+		add(new BookmarkablePageLink<StatisticsPage>("sidebar-statistics", StatisticsPage.class));
 	}
 	
 }
