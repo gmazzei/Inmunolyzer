@@ -1,21 +1,24 @@
 package com.syslab.page;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
-import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.upload.FileUpload;
 import org.apache.wicket.markup.html.form.upload.FileUploadField;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
+import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
-import org.apache.wicket.model.Model;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import com.google.gson.Gson;
+import com.syslab.entity.Diagnosis;
 import com.syslab.entity.Technique;
 import com.syslab.imageAnalisis.ImageAnalizer;
 
@@ -30,7 +33,7 @@ public class ImageAnalisisPage extends BasePage {
 		feedbackPanel.setOutputMarkupId(true);
 		add(feedbackPanel);
 		
-		Form form = new Form("form");
+		Form<Diagnosis> form = new Form<Diagnosis>("form", new CompoundPropertyModel<Diagnosis>(new Diagnosis()));
 		add(form);
 		
 		IModel<List<Technique>> techniqueModel = new LoadableDetachableModel<List<Technique>>() {
@@ -42,34 +45,37 @@ public class ImageAnalisisPage extends BasePage {
 		};
 		
 		DropDownChoice<Technique> techniques = new DropDownChoice<Technique>("technique", techniqueModel);
-		techniques.setDefaultModel(techniqueModel);
 		techniques.setRequired(true);
 		form.add(techniques);
+
 		
-		final FileUploadField fileUploader = new FileUploadField("fileUploader");
-		fileUploader.setOutputMarkupId(true);
+		IModel<List<FileUpload>> fileUploadModel = new LoadableDetachableModel<List<FileUpload>>() {
+			@Override
+			protected List<FileUpload> load() {
+				return new ArrayList<FileUpload>();
+			}
+		};
+		
+		final FileUploadField fileUploader = new FileUploadField("image", fileUploadModel);
 		fileUploader.setRequired(true);
 		form.add(fileUploader);
-		
-		final Label resultValueField = new Label("resultValue");
-		resultValueField.setDefaultModel(Model.of(new String()));
-		resultValueField.setOutputMarkupId(true);
-		add(resultValueField);
 		
 		
 		AjaxButton ajaxButton = new AjaxButton("submit") {
 						
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+				Diagnosis diagnosis = (Diagnosis) form.getModelObject();
 				
 				FileUpload fileUpload = fileUploader.getFileUpload();
 				byte[] fileBytes = fileUpload.getBytes();
 				Double result = imageAnalizer.analize(fileBytes);
-
-				resultValueField.setDefaultModelObject(result.toString());
-				target.add(resultValueField);
+				diagnosis.setResult(result);
 				
-				super.onSubmit(target, form);
+				PageParameters params = new PageParameters();
+				String entity = new Gson().toJson(diagnosis);
+				params.add("entity", entity);
+				setResponsePage(ImageDetailsPage.class, params);
 			}
 
 			@Override
