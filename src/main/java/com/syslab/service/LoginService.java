@@ -1,5 +1,6 @@
 package com.syslab.service;
 
+import org.apache.wicket.Session;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,10 @@ public class LoginService  {
 		} else {
 			return false;
 		}
+	}
+	
+	public void logout() {
+		Session.get().invalidate();
 	}
 	
 }

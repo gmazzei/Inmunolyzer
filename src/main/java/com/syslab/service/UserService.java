@@ -1,6 +1,6 @@
 package com.syslab.service;
 
-import java.util.Collection;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,8 +14,20 @@ public class UserService {
 	@Autowired
 	private UserRepository userRepository;
 	
-	public Collection<User> getAll() {
-		return (Collection<User>) userRepository.findAll();
+	public List<User> getAll() {
+		return (List<User>) userRepository.findAll();
+	}
+	
+	public User getUser(Integer id) {
+		return userRepository.findOne(id);
+	}
+	
+	public void save(User user) {
+		userRepository.save(user);
+	}
+	
+	public void delete(User user) {
+		userRepository.delete(user);
 	}
 	
 }

@@ -1,5 +1,7 @@
 package com.syslab.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -7,9 +9,15 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.apache.wicket.ajax.json.JSONObject;
+import org.apache.wicket.ajax.json.JsonUtils;
+import org.springframework.http.converter.json.GsonBuilderUtils;
+
+import com.google.gson.Gson;
+
 @Entity
 @Table(name = "users")
-public class User {
+public class User implements Serializable {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -25,6 +33,12 @@ public class User {
 	
 	public User() {
 	
+	}
+
+	@Override
+	public String toString() {
+		Gson gson = new Gson();
+		return gson.toJson(this);
 	}
 
 
