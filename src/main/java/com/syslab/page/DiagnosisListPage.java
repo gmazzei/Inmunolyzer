@@ -1,6 +1,9 @@
 package com.syslab.page;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import javax.transaction.Transactional;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
@@ -16,16 +19,19 @@ import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.StringUtils;
 
 import com.syslab.entity.Diagnosis;
+import com.syslab.entity.User;
 import com.syslab.service.DiagnosisService;
 
+@Transactional
 public class DiagnosisListPage extends BasePage {
 
 	@SpringBean
 	private DiagnosisService diagnosisService;
-		
+	
 	public DiagnosisListPage() {
 		
 		//Create Button
@@ -55,9 +61,13 @@ public class DiagnosisListPage extends BasePage {
 			protected List<Diagnosis> load() {
 				String name = searchField.getModelObject();
 				if (StringUtils.isEmpty(name)) {
-					return diagnosisService.getAll();
+					return loggedUser.getDiagnoses();
 				} else {
-					return diagnosisService.findAllByNameContaining(name);
+					List<Diagnosis> list = new ArrayList<Diagnosis>();
+					for (Diagnosis diagnosis : loggedUser.getDiagnoses()) {
+						if (diagnosis.getName().contains(name)) list.add(diagnosis);
+					}
+					return list;
 				}
 			}
 		};
@@ -93,6 +103,7 @@ public class DiagnosisListPage extends BasePage {
 					@Override
 					public void onClick(AjaxRequestTarget target) {
 						diagnosisService.delete(diagnosis);
+						loadLoggedUser();
 						target.add(container);
 					}
 				};

@@ -45,7 +45,7 @@ public class LoginPage extends WebPage {
 				boolean loginSuccessful = loginService.login(username, password);
 				
 				if (loginSuccessful) {
-					redirectToInterceptPage(new ImageAnalisisPage());					
+					setResponsePage(ImageAnalisisPage.class);					
 				} else {
 					error("Invalid username or password");
 				}

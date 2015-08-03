@@ -7,10 +7,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
-
-import org.apache.wicket.markup.html.form.upload.FileUpload;
 
 import com.google.gson.Gson;
 
@@ -34,6 +33,9 @@ public class Diagnosis implements Serializable {
 	@Column(name = "result")
 	private Double result;
 	
+	@ManyToOne
+	@JoinColumn(name = "user_id")
+	private User owner;
 	
 	public Diagnosis() {
 	
@@ -41,8 +43,7 @@ public class Diagnosis implements Serializable {
 
 	@Override
 	public String toString() {
-		Gson gson = new Gson();
-		return gson.toJson(this);
+		return this.name;
 	}
 	
 	
@@ -88,4 +89,12 @@ public class Diagnosis implements Serializable {
 		this.result = result;
 	}
 
+	public User getOwner() {
+		return owner;
+	}
+
+	public void setOwner(User owner) {
+		this.owner = owner;
+	}
+	
 }

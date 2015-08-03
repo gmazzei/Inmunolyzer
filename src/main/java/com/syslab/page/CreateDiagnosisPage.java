@@ -2,7 +2,6 @@ package com.syslab.page;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -100,6 +99,7 @@ public class CreateDiagnosisPage extends BasePage {
 			
 				Double result = imageAnalizer.analize(fileBytes);
 				diagnosis.setResult(result);
+				diagnosis.setOwner(loggedUser);
 				diagnosisService.save(diagnosis);
 				
 				PageParameters params = new PageParameters();

@@ -1,19 +1,19 @@
 package com.syslab.entity;
 
 import java.io.Serializable;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.apache.wicket.ajax.json.JSONObject;
-import org.apache.wicket.ajax.json.JsonUtils;
-import org.springframework.http.converter.json.GsonBuilderUtils;
-
-import com.google.gson.Gson;
+import org.hibernate.engine.internal.Cascade;
 
 @Entity
 @Table(name = "users")
@@ -29,6 +29,8 @@ public class User implements Serializable {
 	@Column(name = "password")
 	private String password;
 	
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "owner")
+	private List<Diagnosis> diagnoses;
 	
 	
 	public User() {
@@ -37,8 +39,7 @@ public class User implements Serializable {
 
 	@Override
 	public String toString() {
-		Gson gson = new Gson();
-		return gson.toJson(this);
+		return this.username;
 	}
 
 
@@ -52,11 +53,9 @@ public class User implements Serializable {
 		return id;
 	}
 
-
 	public void setId(Integer id) {
 		this.id = id;
 	}
-
 
 	public void setUsername(String username) {
 		this.username = username;
@@ -69,5 +68,13 @@ public class User implements Serializable {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-		
+
+	public List<Diagnosis> getDiagnoses() {
+		return diagnoses;
+	}
+
+	public void setDiagnoses(List<Diagnosis> diagnoses) {
+		this.diagnoses = diagnoses;
+	}
+	
 }

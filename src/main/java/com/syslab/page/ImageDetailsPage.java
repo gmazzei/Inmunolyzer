@@ -43,12 +43,13 @@ public class ImageDetailsPage extends BasePage {
 		TextArea<String> description = new TextArea<String>("description");
 		description.setLabel(Model.of("Description"));
 		form.add(description);
-				
+		
 		AjaxButton submitButton = new AjaxButton("submitButton", Model.of("Create new Diagnosis")) {
 
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
 				Diagnosis diagnosis = (Diagnosis) form.getModelObject();
+				diagnosis.setOwner(loggedUser);
 				diagnosisService.save(diagnosis);
 				PageParameters params = new PageParameters();
 				params.add("entityId", diagnosis.getId());

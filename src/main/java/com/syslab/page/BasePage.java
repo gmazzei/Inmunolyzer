@@ -8,6 +8,7 @@ import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import com.syslab.entity.User;
 import com.syslab.service.LoginService;
 
 public abstract class BasePage extends WebPage {
@@ -15,9 +16,12 @@ public abstract class BasePage extends WebPage {
 	@SpringBean
 	protected LoginService loginService;
 	
+	protected User loggedUser;
+	
 	public BasePage() {
+		loadLoggedUser();
 		buildUserMenu();
-		buildSideBar();	
+		buildSideBar();
 	}
 	
 	
@@ -43,4 +47,8 @@ public abstract class BasePage extends WebPage {
 		add(new BookmarkablePageLink<StatisticsPage>("sidebar-statistics", StatisticsPage.class));
 	}
 	
+	protected User loadLoggedUser() {
+		this.loggedUser = loginService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
+		return loggedUser;
+	}
 }
