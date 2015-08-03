@@ -28,7 +28,16 @@ public class ShowUserPage extends BasePage {
 			public void onClick(AjaxRequestTarget target) {
 				PageParameters params = new PageParameters();
 				params.add("entityId", user.getId());
-				setResponsePage(CreateUserPage.class, params);
+				setResponsePage(new UpdateUserPage(params));
+			}
+		};
+		
+		AjaxLink<Void> editPasswordButton = new AjaxLink<Void>("editPasswordButton") {
+			@Override
+			public void onClick(AjaxRequestTarget target) {
+				PageParameters params = new PageParameters();
+				params.add("entityId", user.getId());
+				setResponsePage(new UpdatePasswordPage(params));
 			}
 		};
 		
@@ -41,6 +50,7 @@ public class ShowUserPage extends BasePage {
 		};
 		
 		add(editButton);
+		add(editPasswordButton);
 		add(deleteButton);
 		add(new BookmarkablePageLink<UserListPage>("returnButton", UserListPage.class));
 	}

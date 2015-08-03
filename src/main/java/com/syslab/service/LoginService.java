@@ -3,6 +3,7 @@ package com.syslab.service;
 import org.apache.wicket.Session;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.syslab.entity.User;
@@ -16,6 +17,8 @@ public class LoginService  {
 	
 	public boolean login(String username, String password) {
 		AuthenticatedWebSession session = AuthenticatedWebSession.get();
+		
+		//if (isUserLogged()) logout();
 		
 		if (session.signIn(username, password)) {
 			return true;
@@ -31,4 +34,10 @@ public class LoginService  {
 	public User findByUsername(String username) {
 		return userRepository.findByUsername(username);
 	}
+	
+	public boolean isUserLogged() {
+		return SecurityContextHolder.getContext().getAuthentication() != null && SecurityContextHolder.getContext().getAuthentication().isAuthenticated();
+	}
+	
+			
 }

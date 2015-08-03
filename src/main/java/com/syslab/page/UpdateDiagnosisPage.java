@@ -11,19 +11,27 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import com.google.gson.Gson;
 import com.syslab.entity.Diagnosis;
+import com.syslab.imageAnalisis.ImageAnalizer;
 import com.syslab.service.DiagnosisService;
 
-public class ImageDetailsPage extends BasePage {
+public class UpdateDiagnosisPage extends BasePage {
 
 
 	@SpringBean
 	private DiagnosisService diagnosisService;
 	
-	public ImageDetailsPage(PageParameters params) {
-		String json = params.get("entity").toString();
-		Diagnosis diagnosis = new Gson().fromJson(json, Diagnosis.class);
+	@SpringBean
+	private ImageAnalizer imageAnalizer;
+	
+	public UpdateDiagnosisPage() {
+		Diagnosis diagnosis = new Diagnosis();
+		this.preparePage(diagnosis);
+	}
+	
+	public UpdateDiagnosisPage(PageParameters params) {
+		Integer id = params.get("entityId").toInteger();
+		Diagnosis diagnosis = diagnosisService.getDiagnosis(id);
 		this.preparePage(diagnosis);
 	}
 	
@@ -43,14 +51,15 @@ public class ImageDetailsPage extends BasePage {
 		TextArea<String> description = new TextArea<String>("description");
 		description.setLabel(Model.of("Description"));
 		form.add(description);
+				
 		
-		AjaxButton submitButton = new AjaxButton("submitButton", Model.of("Create new Diagnosis")) {
+		AjaxButton submitButton = new AjaxButton("submitButton", Model.of("Save")) {
 
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
 				Diagnosis diagnosis = (Diagnosis) form.getModelObject();
-				diagnosis.setOwner(loggedUser);
 				diagnosisService.save(diagnosis);
+				
 				PageParameters params = new PageParameters();
 				params.add("entityId", diagnosis.getId());
 				setResponsePage(new ShowDiagnosisPage(params));

@@ -7,18 +7,23 @@
                     http://www.springframework.org/schema/security/spring-security-3.2.xsd">
 
 	<http use-expressions="true" create-session="never" auto-config="true">
+		<intercept-url pattern="/MainPage" access="permitAll" />
 		<intercept-url pattern="/LoginPage" access="permitAll" />
 		<intercept-url pattern="/ErrorPage" access="permitAll" />
+		<intercept-url pattern="/SignUpPage" access="permitAll" />
 		<intercept-url pattern="/ImageAnalisisPage*" access="isAuthenticated()" />
 		<intercept-url pattern="/ImageDetailsPage*" access="isAuthenticated()" />
 		<intercept-url pattern="/DiagnosisListPage*" access="isAuthenticated()" />
 		<intercept-url pattern="/ShowDiagnosisPage*" access="isAuthenticated()" />
 		<intercept-url pattern="/CreateDiagnosisPage*" access="isAuthenticated()" />
+		<intercept-url pattern="/UpdateDiagnosisPage*" access="isAuthenticated()" />
 		<intercept-url pattern="/UserListPage*" access="isAuthenticated()" />
 		<intercept-url pattern="/ShowUserPage*" access="isAuthenticated()" />
 		<intercept-url pattern="/CreateUserPage*" access="isAuthenticated()" />
+		<intercept-url pattern="/UpdateUserPage*" access="isAuthenticated()" />
+		<intercept-url pattern="/UpdatePasswordPage*" access="isAuthenticated()" />
 		<intercept-url pattern="/StatisticsPage*" access="isAuthenticated()" />
-		<form-login login-page="/LoginPage" username-parameter="username" password-parameter="password"/>
+		<form-login login-page="/LoginPage" default-target-url="/ImageAnalisisPage" username-parameter="username" password-parameter="password"/>
 	</http>
 	
 	<beans:bean id="inmunolyzerAuthenticationProvider" class="com.syslab.security.InmunolyzerAuthenticationProvider"></beans:bean>

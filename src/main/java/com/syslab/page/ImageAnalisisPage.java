@@ -75,7 +75,7 @@ public class ImageAnalisisPage extends BasePage {
 				PageParameters params = new PageParameters();
 				String entity = new Gson().toJson(diagnosis);
 				params.add("entity", entity);
-				setResponsePage(ImageDetailsPage.class, params);
+				setResponsePage(new ImageDetailsPage(params));
 			}
 
 			@Override

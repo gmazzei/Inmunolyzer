@@ -6,21 +6,22 @@ import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.syslab.service.LoginService;
-import com.syslab.service.UserService;
 
 public class LoginPage extends WebPage {
 	
 	@SpringBean
 	private LoginService loginService;
 	
-	@SpringBean
-	private UserService userService;
-	
 	public LoginPage() {
+		
+		final FeedbackPanel feedbackPanel = new FeedbackPanel("feedbackPanel");
+		feedbackPanel.setOutputMarkupId(true);
+		add(feedbackPanel);
 		
 		Form form = new Form("form");
 		this.add(form);
@@ -42,14 +43,18 @@ public class LoginPage extends WebPage {
 				String username = usernameField.getModelObject();
 				String password = passwordField.getModelObject();
 				
-				boolean loginSuccessful = loginService.login(username, password);
-				
+				boolean loginSuccessful = loginService.login(username, password);						
 				if (loginSuccessful) {
 					setResponsePage(ImageAnalisisPage.class);					
 				} else {
 					error("Invalid username or password");
+					target.add(feedbackPanel);
 				}
-				
+			}
+
+			@Override
+			protected void onError(AjaxRequestTarget target, Form<?> form) {
+				target.add(feedbackPanel);
 			}
 			
 		};

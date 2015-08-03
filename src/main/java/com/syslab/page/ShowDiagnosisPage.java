@@ -31,7 +31,7 @@ public class ShowDiagnosisPage extends BasePage {
 			public void onClick(AjaxRequestTarget target) {
 				PageParameters params = new PageParameters();
 				params.add("entityId", diagnosis.getId());
-				setResponsePage(CreateDiagnosisPage.class, params);
+				setResponsePage(new UpdateDiagnosisPage(params));
 			}
 		};
 		

@@ -2,6 +2,7 @@ package com.syslab.page;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
+import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.RequiredTextField;
@@ -9,19 +10,21 @@ import org.apache.wicket.markup.html.form.validation.EqualPasswordInputValidator
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.syslab.entity.User;
+import com.syslab.service.LoginService;
 import com.syslab.service.UserService;
 
-public class CreateUserPage extends BasePage {
+public class SignUpPage extends WebPage {
 	
+	@SpringBean 
+	private LoginService loginService;
 
 	@SpringBean
 	private UserService userService;
 	
-	public CreateUserPage() {
+	public SignUpPage() {
 		User user = new User();
 		this.preparePage(user);
 	}
@@ -52,15 +55,14 @@ public class CreateUserPage extends BasePage {
 		
 		form.add(new EqualPasswordInputValidator(password, passwordConfirmation));
 		
-		AjaxButton submitButton = new AjaxButton("submitButton", Model.of("Create User")) {
+		AjaxButton submitButton = new AjaxButton("submitButton", Model.of("Confirm")) {
 
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
 				User user = (User) form.getModelObject();
 				userService.save(user);
-				PageParameters params = new PageParameters();
-				params.add("entityId", user.getId());
-				setResponsePage(new ShowUserPage(params));
+				loginService.login(user.getUsername(), user.getPassword());
+				setResponsePage(ImageAnalisisPage.class);
 			}
 
 			@Override

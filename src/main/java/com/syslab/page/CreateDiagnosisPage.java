@@ -104,7 +104,7 @@ public class CreateDiagnosisPage extends BasePage {
 				
 				PageParameters params = new PageParameters();
 				params.add("entityId", diagnosis.getId());
-				setResponsePage(ShowDiagnosisPage.class, params);
+				setResponsePage(new ShowDiagnosisPage(params));
 			}
 
 			@Override

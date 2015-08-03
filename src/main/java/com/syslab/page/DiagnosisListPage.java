@@ -19,11 +19,9 @@ import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.StringUtils;
 
 import com.syslab.entity.Diagnosis;
-import com.syslab.entity.User;
 import com.syslab.service.DiagnosisService;
 
 @Transactional
@@ -86,7 +84,7 @@ public class DiagnosisListPage extends BasePage {
 					public void onClick(AjaxRequestTarget target) {
 						PageParameters params = new PageParameters();
 						params.add("entityId", diagnosis.getId());
-						setResponsePage(ShowDiagnosisPage.class, params);
+						setResponsePage(new ShowDiagnosisPage(params));
 					}
 				};
 				
@@ -95,7 +93,7 @@ public class DiagnosisListPage extends BasePage {
 					public void onClick(AjaxRequestTarget target) {
 						PageParameters params = new PageParameters();
 						params.add("entityId", diagnosis.getId());
-						setResponsePage(CreateDiagnosisPage.class, params);
+						setResponsePage(new UpdateDiagnosisPage(params));
 					}
 				};
 				
