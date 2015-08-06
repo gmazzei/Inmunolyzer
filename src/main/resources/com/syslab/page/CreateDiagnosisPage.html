@@ -6,21 +6,50 @@
 
 <wicket:extend xmlns:wicket="http://wicket.apache.org">
 	
-	<form wicket:id="form">
-		<input type="text" wicket:id="name" placeholder="Name">
-		<textarea wicket:id="description" rows="4" cols="50" placeholder="Description"></textarea>
-		<select wicket:id="technique"></select>
-		
-		<input type="file" wicket:id="image">
-		<script src="http://code.jquery.com/jquery-latest.min.js"></script>
-		<script src="ezdz/jquery.ezdz.js"></script>
-		<script type="text/javascript" src="ezdz/template.js"></script>
-		
-		
-		<input type="submit" wicket:id="submitButton">	
-	</form>
-	
-	<div wicket:id="feedbackPanel"></div>
+		<div class="row">
+		<div class="col-lg-12">
+			<section class="panel">
+				<header class="panel-heading">Create New Diagnosis</header>
+				<div class="panel-body">
+					<form wicket:id="form" class="form-horizontal " method="get">
+						<div class="form-group">
+							<label class="col-sm-2 control-label">Name</label>
+							<div class="col-sm-5">
+								<input type="text" wicket:id="name" class="form-control">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">Description</label>
+							<div class="col-sm-5">
+								<textarea wicket:id="description" rows="4" cols="50" class="form-control"></textarea>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">Technique</label>
+							<div class="col-sm-5">
+								<select wicket:id="technique" class="form-control"></select>
+							</div>
+						</div>
+						<div class="form-group">
+							
+							<div class="col-sm-12">
+								<input type="file" wicket:id="image">
+								<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+								<script src="ezdz/jquery.ezdz.js"></script>
+								<script type="text/javascript" src="ezdz/template.js"></script>
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="col-lg-12 text-center">
+								<button type="submit" wicket:id="submitButton" class="btn btn-primary">Analize Image</button>
+							</div>
+						</div>
+					</form>
+					<div wicket:id="feedbackPanel"></div>
+				</div>
+			</section>
+		</div>
+	</div>
 	
 	
 </wicket:extend>
