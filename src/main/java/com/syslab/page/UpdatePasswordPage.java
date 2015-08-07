@@ -14,7 +14,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import com.syslab.entity.User;
 import com.syslab.service.UserService;
 
-public class UpdatePasswordPage extends BasePage {
+public class UpdatePasswordPage extends MainBasePage {
 	
 
 	@SpringBean

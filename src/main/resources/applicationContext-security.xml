@@ -7,7 +7,6 @@
                     http://www.springframework.org/schema/security/spring-security-3.2.xsd">
 
 	<http use-expressions="true" create-session="never" auto-config="true">
-		<intercept-url pattern="/MainPage" access="permitAll" />
 		<intercept-url pattern="/LoginPage" access="permitAll" />
 		<intercept-url pattern="/ErrorPage" access="permitAll" />
 		<intercept-url pattern="/SignUpPage" access="permitAll" />

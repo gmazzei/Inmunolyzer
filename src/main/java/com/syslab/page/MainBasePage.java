@@ -11,14 +11,14 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import com.syslab.entity.User;
 import com.syslab.service.LoginService;
 
-public abstract class BasePage extends WebPage {
+public abstract class MainBasePage extends WebPage {
 	
 	@SpringBean
 	protected LoginService loginService;
 	
 	protected User loggedUser;
 	
-	public BasePage() {
+	public MainBasePage() {
 		loadLoggedUser();
 		buildUserMenu();
 		buildSideBar();

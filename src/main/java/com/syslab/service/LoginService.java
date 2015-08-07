@@ -16,9 +16,7 @@ public class LoginService  {
 	private UserRepository userRepository;
 	
 	public boolean login(String username, String password) {
-		AuthenticatedWebSession session = AuthenticatedWebSession.get();
-		
-		//if (isUserLogged()) logout();
+		AuthenticatedWebSession session = AuthenticatedWebSession.get();		
 		
 		if (session.signIn(username, password)) {
 			return true;
@@ -36,7 +34,7 @@ public class LoginService  {
 	}
 	
 	public boolean isUserLogged() {
-		return SecurityContextHolder.getContext().getAuthentication() != null && SecurityContextHolder.getContext().getAuthentication().isAuthenticated();
+		return SecurityContextHolder.getContext().getAuthentication() != null && !SecurityContextHolder.getContext().getAuthentication().getName().equals("anonymousUser");
 	}
 	
 			

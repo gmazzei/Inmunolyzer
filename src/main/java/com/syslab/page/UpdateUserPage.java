@@ -13,7 +13,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import com.syslab.entity.User;
 import com.syslab.service.UserService;
 
-public class UpdateUserPage extends BasePage {
+public class UpdateUserPage extends MainBasePage {
 	
 
 	@SpringBean

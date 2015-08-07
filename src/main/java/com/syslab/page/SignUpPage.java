@@ -2,11 +2,11 @@ package com.syslab.page;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
-import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.form.validation.EqualPasswordInputValidator;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.Model;
@@ -16,7 +16,7 @@ import com.syslab.entity.User;
 import com.syslab.service.LoginService;
 import com.syslab.service.UserService;
 
-public class SignUpPage extends WebPage {
+public class SignUpPage extends LoginBasePage {
 	
 	@SpringBean 
 	private LoginService loginService;
@@ -71,6 +71,8 @@ public class SignUpPage extends WebPage {
 			}
 			
 		};
+		
+		form.add(new BookmarkablePageLink<LoginPage>("returnButton", LoginPage.class));
 		
 		form.add(submitButton);
 		

@@ -21,7 +21,7 @@ import org.springframework.util.StringUtils;
 import com.syslab.entity.User;
 import com.syslab.service.UserService;
 
-public class UserListPage extends BasePage {
+public class UserListPage extends MainBasePage {
 	
 	@SpringBean
 	private UserService userService;

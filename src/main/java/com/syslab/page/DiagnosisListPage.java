@@ -25,7 +25,7 @@ import com.syslab.entity.Diagnosis;
 import com.syslab.service.DiagnosisService;
 
 @Transactional
-public class DiagnosisListPage extends BasePage {
+public class DiagnosisListPage extends MainBasePage {
 
 	@SpringBean
 	private DiagnosisService diagnosisService;

@@ -1,6 +1,6 @@
 package com.syslab.page;
 
-public class StatisticsPage extends BasePage {
+public class StatisticsPage extends MainBasePage {
 
 	public StatisticsPage() {
 		

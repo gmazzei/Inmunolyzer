@@ -10,7 +10,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import com.syslab.entity.Diagnosis;
 import com.syslab.service.DiagnosisService;
 
-public class ShowDiagnosisPage extends BasePage {
+public class ShowDiagnosisPage extends MainBasePage {
 
 	@SpringBean
 	private DiagnosisService diagnosisService;

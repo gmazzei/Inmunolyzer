@@ -22,7 +22,7 @@ import com.syslab.entity.Diagnosis;
 import com.syslab.entity.Technique;
 import com.syslab.imageAnalisis.ImageAnalizer;
 
-public class ImageAnalisisPage extends BasePage {
+public class ImageAnalisisPage extends MainBasePage {
 		
 	@SpringBean
 	private ImageAnalizer imageAnalizer;

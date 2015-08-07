@@ -15,7 +15,7 @@ import com.syslab.entity.Diagnosis;
 import com.syslab.imageAnalisis.ImageAnalizer;
 import com.syslab.service.DiagnosisService;
 
-public class UpdateDiagnosisPage extends BasePage {
+public class UpdateDiagnosisPage extends MainBasePage {
 
 
 	@SpringBean

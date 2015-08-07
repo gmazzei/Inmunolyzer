@@ -15,7 +15,7 @@ import com.google.gson.Gson;
 import com.syslab.entity.Diagnosis;
 import com.syslab.service.DiagnosisService;
 
-public class ImageDetailsPage extends BasePage {
+public class ImageDetailsPage extends MainBasePage {
 
 
 	@SpringBean

@@ -10,7 +10,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import com.syslab.entity.User;
 import com.syslab.service.UserService;
 
-public class ShowUserPage extends BasePage {
+public class ShowUserPage extends MainBasePage {
 
 	@SpringBean
 	private UserService userService;

@@ -15,7 +15,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import com.syslab.entity.User;
 import com.syslab.service.UserService;
 
-public class CreateUserPage extends BasePage {
+public class CreateUserPage extends MainBasePage {
 	
 
 	@SpringBean
