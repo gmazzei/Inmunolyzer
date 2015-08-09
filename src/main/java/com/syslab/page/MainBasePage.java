@@ -41,10 +41,18 @@ public abstract class MainBasePage extends WebPage {
 	}
 	
 	protected void buildSideBar() {
-		add(new BookmarkablePageLink<ImageAnalisisPage>("sidebar-image-analisis", ImageAnalisisPage.class));
-		add(new BookmarkablePageLink<DiagnosisListPage>("sidebar-diagnosis", DiagnosisListPage.class));
-		add(new BookmarkablePageLink<UserListPage>("sidebar-users", UserListPage.class));
-		add(new BookmarkablePageLink<StatisticsPage>("sidebar-statistics", StatisticsPage.class));
+		BookmarkablePageLink<ImageAnalisisPage> imageAnalisis = new BookmarkablePageLink<ImageAnalisisPage>("sidebar-image-analisis", ImageAnalisisPage.class);
+		BookmarkablePageLink<DiagnosisListPage> diagnosisList = new BookmarkablePageLink<DiagnosisListPage>("sidebar-diagnosis", DiagnosisListPage.class);
+		BookmarkablePageLink<UserListPage> usersList = new BookmarkablePageLink<UserListPage>("sidebar-users", UserListPage.class);
+		BookmarkablePageLink<StatisticsPage> statistics = new BookmarkablePageLink<StatisticsPage>("sidebar-statistics", StatisticsPage.class);
+		
+		boolean hasPrivilege = loggedUser.isAdmin();
+		usersList.setVisible(hasPrivilege);
+		
+		add(imageAnalisis);
+		add(diagnosisList);
+		add(usersList);
+		add(statistics);
 	}
 	
 	protected User loadLoggedUser() {

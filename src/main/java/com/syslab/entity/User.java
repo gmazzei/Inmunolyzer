@@ -26,6 +26,11 @@ public class User implements Serializable {
 	@Column(name = "password")
 	private String password;
 	
+	@Column(name = "is_admin")
+	private boolean admin;
+	
+
+
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "owner")
 	private List<Diagnosis> diagnoses;
 	
@@ -72,6 +77,14 @@ public class User implements Serializable {
 
 	public void setDiagnoses(List<Diagnosis> diagnoses) {
 		this.diagnoses = diagnoses;
+	}
+
+	public boolean isAdmin() {
+		return admin;
+	}
+
+	public void setAdmin(boolean admin) {
+		this.admin = admin;
 	}
 	
 }
