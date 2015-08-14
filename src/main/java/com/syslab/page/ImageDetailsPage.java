@@ -48,18 +48,11 @@ public class ImageDetailsPage extends MainBasePage {
 
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-				target.appendJavaScript("noty({text: 'Saved!', layout: 'center', type: 'success', modal: 'true'});");
 				Diagnosis diagnosis = (Diagnosis) form.getModelObject();
 				diagnosis.setOwner(loggedUser);
 				diagnosisService.save(diagnosis);
 				PageParameters params = new PageParameters();
 				params.add("entityId", diagnosis.getId());
-				try {
-					Thread.sleep(10000);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
 				setResponsePage(new ShowDiagnosisPage(params));
 			}
 

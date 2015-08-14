@@ -18,7 +18,6 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.google.gson.Gson;
-import com.syslab.component.Noty;
 import com.syslab.entity.Diagnosis;
 import com.syslab.entity.Technique;
 import com.syslab.imageAnalisis.ImageAnalizer;
@@ -81,8 +80,7 @@ public class ImageAnalisisPage extends MainBasePage {
 
 			@Override
 			protected void onError(AjaxRequestTarget target, Form<?> form) {
-				new Noty().show("Hi", target);
-				//target.add(feedbackPanel);
+				target.add(feedbackPanel);
 			}
 		};
 		
