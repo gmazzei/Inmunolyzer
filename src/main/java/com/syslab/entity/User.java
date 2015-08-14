@@ -1,6 +1,7 @@
 package com.syslab.entity;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -29,14 +30,15 @@ public class User implements Serializable {
 	@Column(name = "is_admin")
 	private boolean admin;
 	
-
+	@Column(name = "creation_date", nullable = false)
+	private Date creationDate;
 
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "owner")
 	private List<Diagnosis> diagnoses;
 	
 	
 	public User() {
-	
+		this.creationDate = new Date();
 	}
 
 	@Override
@@ -85,6 +87,14 @@ public class User implements Serializable {
 
 	public void setAdmin(boolean admin) {
 		this.admin = admin;
+	}
+
+	public Date getCreationDate() {
+		return creationDate;
+	}
+
+	public void setCreationDate(Date creationDate) {
+		this.creationDate = creationDate;
 	}
 	
 }
