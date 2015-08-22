@@ -29,12 +29,12 @@ public class ImageDetailsPage extends MainBasePage {
 	
 	private void preparePage(Diagnosis diagnosis) {
 		
-		final FeedbackPanel feedbackPanel = new FeedbackPanel("feedbackPanel");
-		feedbackPanel.setOutputMarkupId(true);
-		add(feedbackPanel);
-		
 		Form<Diagnosis> form = new Form<Diagnosis>("form", new CompoundPropertyModel<Diagnosis>(Model.of(diagnosis)));
 		add(form);
+		
+		final FeedbackPanel feedbackPanel = new FeedbackPanel("feedbackPanel");
+		feedbackPanel.setOutputMarkupId(true);
+		form.add(feedbackPanel);
 		
 		RequiredTextField<String> name = new RequiredTextField<String>("name");
 		name.setLabel(Model.of("Name"));

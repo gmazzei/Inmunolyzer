@@ -20,6 +20,7 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import com.syslab.component.Noty;
 import com.syslab.entity.Diagnosis;
 import com.syslab.entity.Technique;
 import com.syslab.imageAnalisis.ImageAnalizer;
@@ -39,11 +40,6 @@ public class CreateDiagnosisPage extends MainBasePage {
 		this.preparePage(diagnosis);
 	}
 	
-	public CreateDiagnosisPage(PageParameters params) {
-		Integer id = params.get("entityId").toInteger();
-		Diagnosis diagnosis = diagnosisService.getDiagnosis(id);
-		this.preparePage(diagnosis);
-	}
 	
 	private void preparePage(Diagnosis diagnosis) {
 		
@@ -54,7 +50,7 @@ public class CreateDiagnosisPage extends MainBasePage {
 		Form<Diagnosis> form = new Form<Diagnosis>("form", new CompoundPropertyModel<Diagnosis>(Model.of(diagnosis)));
 		add(form);
 		
-		RequiredTextField<String> name = new RequiredTextField<String>("name");
+		final RequiredTextField<String> name = new RequiredTextField<String>("name");
 		name.setLabel(Model.of("Name"));
 		form.add(name);
 		
@@ -71,8 +67,9 @@ public class CreateDiagnosisPage extends MainBasePage {
 			
 		};
 		
-		DropDownChoice<Technique> techniques = new DropDownChoice<Technique>("technique", techniqueModel);
+		final DropDownChoice<Technique> techniques = new DropDownChoice<Technique>("technique", techniqueModel);
 		techniques.setRequired(true);
+		techniques.setLabel(Model.of("Technique"));
 		form.add(techniques);
 		
 		IModel<List<FileUpload>> fileUploadModel = new LoadableDetachableModel<List<FileUpload>>() {
@@ -86,6 +83,7 @@ public class CreateDiagnosisPage extends MainBasePage {
 		final FileUploadField fileUploader = new FileUploadField("image", fileUploadModel);
 		fileUploader.setOutputMarkupId(true);
 		fileUploader.setRequired(true);
+		fileUploader.setLabel(Model.of("Image"));
 		form.add(fileUploader);
 		
 		
@@ -109,7 +107,18 @@ public class CreateDiagnosisPage extends MainBasePage {
 
 			@Override
 			protected void onError(AjaxRequestTarget target, Form<?> form) {
-				target.add(feedbackPanel);
+				List<String> messages = new ArrayList<String>();
+				
+				if (!name.getFeedbackMessages().isEmpty())
+					messages.add(name.getFeedbackMessages().first().getMessage().toString());
+				
+				if (!techniques.getFeedbackMessages().isEmpty())
+					messages.add(techniques.getFeedbackMessages().first().getMessage().toString());
+				
+				if (!fileUploader.getFeedbackMessages().isEmpty())
+					messages.add(fileUploader.getFeedbackMessages().first().getMessage().toString());
+				
+				new Noty().show(messages, target);
 			}
 			
 		};

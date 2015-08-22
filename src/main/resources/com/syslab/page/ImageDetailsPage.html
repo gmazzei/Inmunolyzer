@@ -9,7 +9,7 @@
 		<div class="row">
 		<div class="col-lg-12">
 			<section class="panel">
-				<header class="panel-heading">Details</header>
+				<header class="panel-heading"><strong>Complete the details to save the diagnosis</strong></header>
 				<div class="panel-body">
 					<form wicket:id="form" class="form-horizontal " method="get">
 						<div class="form-group">
@@ -29,8 +29,11 @@
 								<button type="submit" wicket:id="submitButton" class="btn btn-primary">Confirm</button>
 							</div>
 						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label"></label>
+							<div wicket:id="feedbackPanel" class="text-danger"></div>
+						</div>
 					</form>
-					<div wicket:id="feedbackPanel"></div>
 				</div>
 			</section>
 		</div>

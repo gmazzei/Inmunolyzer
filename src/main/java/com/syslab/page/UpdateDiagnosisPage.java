@@ -1,5 +1,8 @@
 package com.syslab.page;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.form.Form;
@@ -11,6 +14,7 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import com.syslab.component.Noty;
 import com.syslab.entity.Diagnosis;
 import com.syslab.imageAnalisis.ImageAnalizer;
 import com.syslab.service.DiagnosisService;
@@ -44,7 +48,7 @@ public class UpdateDiagnosisPage extends MainBasePage {
 		Form<Diagnosis> form = new Form<Diagnosis>("form", new CompoundPropertyModel<Diagnosis>(Model.of(diagnosis)));
 		add(form);
 		
-		RequiredTextField<String> name = new RequiredTextField<String>("name");
+		final RequiredTextField<String> name = new RequiredTextField<String>("name");
 		name.setLabel(Model.of("Name"));
 		form.add(name);
 		
@@ -67,7 +71,12 @@ public class UpdateDiagnosisPage extends MainBasePage {
 
 			@Override
 			protected void onError(AjaxRequestTarget target, Form<?> form) {
-				target.add(feedbackPanel);
+				List<String> messages = new ArrayList<String>();
+				
+				if (!name.getFeedbackMessages().isEmpty())
+					messages.add(name.getFeedbackMessages().first().getMessage().toString());
+				
+				new Noty().show(messages, target);
 			}
 			
 		};

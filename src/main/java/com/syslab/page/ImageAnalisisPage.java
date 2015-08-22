@@ -14,10 +14,12 @@ import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.google.gson.Gson;
+import com.syslab.component.Noty;
 import com.syslab.entity.Diagnosis;
 import com.syslab.entity.Technique;
 import com.syslab.imageAnalisis.ImageAnalizer;
@@ -29,12 +31,12 @@ public class ImageAnalisisPage extends MainBasePage {
 	
 	public ImageAnalisisPage() {
 		
-		final FeedbackPanel feedbackPanel = new FeedbackPanel("feedbackPanel");
-		feedbackPanel.setOutputMarkupId(true);
-		add(feedbackPanel);
-		
 		Form<Diagnosis> form = new Form<Diagnosis>("form", new CompoundPropertyModel<Diagnosis>(new Diagnosis()));
 		add(form);
+		
+		final FeedbackPanel feedbackPanel = new FeedbackPanel("feedbackPanel");
+		feedbackPanel.setOutputMarkupId(true);
+		form.add(feedbackPanel);
 		
 		IModel<List<Technique>> techniqueModel = new LoadableDetachableModel<List<Technique>>() {
 
@@ -44,8 +46,9 @@ public class ImageAnalisisPage extends MainBasePage {
 			}
 		};
 		
-		DropDownChoice<Technique> techniques = new DropDownChoice<Technique>("technique", techniqueModel);
+		final DropDownChoice<Technique> techniques = new DropDownChoice<Technique>("technique", techniqueModel);
 		techniques.setRequired(true);
+		techniques.setLabel(Model.of("Technique"));
 		form.add(techniques);
 
 		
@@ -58,6 +61,7 @@ public class ImageAnalisisPage extends MainBasePage {
 		
 		final FileUploadField fileUploader = new FileUploadField("image", fileUploadModel);
 		fileUploader.setRequired(true);
+		fileUploader.setLabel(Model.of("Image"));
 		form.add(fileUploader);
 		
 		
@@ -80,7 +84,15 @@ public class ImageAnalisisPage extends MainBasePage {
 
 			@Override
 			protected void onError(AjaxRequestTarget target, Form<?> form) {
-				target.add(feedbackPanel);
+				List<String> messages = new ArrayList<String>();
+				
+				if (!techniques.getFeedbackMessages().isEmpty())
+					messages.add(techniques.getFeedbackMessages().first().getMessage().toString());
+				
+				if (!fileUploader.getFeedbackMessages().isEmpty())
+					messages.add(fileUploader.getFeedbackMessages().first().getMessage().toString());
+				
+				new Noty().show(messages, target);
 			}
 		};
 		

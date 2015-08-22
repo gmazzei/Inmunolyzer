@@ -32,12 +32,12 @@ public class SignUpPage extends LoginBasePage {
 	
 	private void preparePage(User user) {
 		
-		final FeedbackPanel feedbackPanel = new FeedbackPanel("feedbackPanel");
-		feedbackPanel.setOutputMarkupId(true);
-		add(feedbackPanel);
-		
 		Form<User> form = new Form<User>("form", new CompoundPropertyModel<User>(Model.of(user)));
 		add(form);
+		
+		final FeedbackPanel feedbackPanel = new FeedbackPanel("feedbackPanel");
+		feedbackPanel.setOutputMarkupId(true);
+		form.add(feedbackPanel);
 		
 		RequiredTextField<String> username = new RequiredTextField<String>("username");
 		username.setLabel(Model.of("Username"));
@@ -49,7 +49,7 @@ public class SignUpPage extends LoginBasePage {
 		form.add(password);
 		
 		PasswordTextField passwordConfirmation = new PasswordTextField("passwordConfirmation", Model.of(new String()));
-		passwordConfirmation.setLabel(Model.of("Confirm password"));
+		passwordConfirmation.setLabel(Model.of("Repeat password"));
 		password.setRequired(true);
 		form.add(passwordConfirmation);
 		

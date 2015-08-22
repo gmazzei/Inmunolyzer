@@ -15,13 +15,12 @@
 		</div>
 	</div>
 
-
 	<div class="row">
 		<div class="col-lg-12">
 			<section class="panel">
-				<header class="panel-heading"></header>
+				<header class="panel-heading"><strong>Select Technique and drop the Image to Analize</strong></header>
 				<div class="panel-body">
-					<form wicket:id="form" class="form-horizontal " method="get">
+					<form wicket:id="form" class="form-horizontal ">
 						<div class="form-group">
 							<label class="col-sm-2 control-label">Technique</label>
 							<div class="col-sm-7">
@@ -36,15 +35,17 @@
 								<script type="text/javascript" src="ezdz/template.js"></script>
 							</div>
 						</div>
+						
+						<div wicket:id="feedbackPanel" class="col-lg-offset-1 text-danger"></div>
+						
 						<div class="form-group">
 							<div class="col-sm-12 text-center">
 								<input wicket:id="submit" type="submit" class="btn btn-primary"
-									value="Analizar Imagen">
+									value="Inmunolyze Image">
 							</div>
 						</div>
 
 					</form>
-					<div wicket:id="feedbackPanel"></div>
 				</div>
 			</section>
 		</div>

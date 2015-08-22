@@ -19,21 +19,23 @@ public class LoginPage extends LoginBasePage {
 	
 	public LoginPage() {
 		
-		final FeedbackPanel feedbackPanel = new FeedbackPanel("feedbackPanel");
-		feedbackPanel.setOutputMarkupId(true);
-		add(feedbackPanel);
-		
 		Form form = new Form("form");
 		this.add(form);
+		
+		final FeedbackPanel feedbackPanel = new FeedbackPanel("feedbackPanel");
+		feedbackPanel.setOutputMarkupId(true);
+		form.add(feedbackPanel);
 		
 		final TextField<String> usernameField = new TextField<String>("username");
 		usernameField.setDefaultModel(Model.of(new String()));
 		usernameField.setRequired(true);
+		usernameField.setLabel(Model.of("Username"));
 		form.add(usernameField);
 		
 		final PasswordTextField passwordField = new PasswordTextField("password");
 		passwordField.setDefaultModel(Model.of(new String()));
 		passwordField.setRequired(true);
+		passwordField.setLabel(Model.of("Password"));
 		form.add(passwordField);
 		
 		AjaxButton submitButton = new AjaxButton("submit") {
@@ -47,7 +49,7 @@ public class LoginPage extends LoginBasePage {
 				if (loginSuccessful) {
 					setResponsePage(ImageAnalisisPage.class);					
 				} else {
-					error("Invalid username or password");
+					error("Invalid Username or Password");
 					target.add(feedbackPanel);
 				}
 			}
@@ -62,6 +64,7 @@ public class LoginPage extends LoginBasePage {
 		form.add(new BookmarkablePageLink<SignUpPage>("signUpButton", SignUpPage.class));
 		
 		form.add(submitButton);
+		
 		
 	}
 	
