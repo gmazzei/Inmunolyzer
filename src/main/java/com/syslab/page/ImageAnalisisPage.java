@@ -1,5 +1,6 @@
 package com.syslab.page;
 
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -73,7 +74,17 @@ public class ImageAnalisisPage extends MainBasePage {
 				
 				FileUpload fileUpload = fileUploader.getFileUpload();
 				byte[] fileBytes = fileUpload.getBytes();
-				Double result = imageAnalizer.analize(fileBytes);
+				
+				String path = "/home/gabriel/InmunolyzerImages/" + fileUpload.getClientFileName();
+				try {
+					FileOutputStream fos = new FileOutputStream(path);
+					fos.write(fileBytes);
+					fos.close();
+				} catch (Exception e) {
+					throw new RuntimeException(e);
+				}
+				
+				Double result = imageAnalizer.analize(path);
 				diagnosis.setResult(result);
 				
 				PageParameters params = new PageParameters();

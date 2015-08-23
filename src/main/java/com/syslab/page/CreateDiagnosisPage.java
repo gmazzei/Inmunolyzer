@@ -1,5 +1,6 @@
 package com.syslab.page;
 
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -95,10 +96,17 @@ public class CreateDiagnosisPage extends MainBasePage {
 				FileUpload fileUpload = fileUploader.getFileUpload();
 				byte[] fileBytes = fileUpload.getBytes();
 			
-				Double result = imageAnalizer.analize(fileBytes);
+				String path = "/home/gabriel/testImages/" + fileUpload.getClientFileName();
+				try {
+					FileOutputStream fos = new FileOutputStream(path);
+					fos.write(fileBytes);
+					fos.close();
+				} catch (Exception e) {
+					throw new RuntimeException(e);
+				}
+				
+				Double result = imageAnalizer.analize(path);
 				diagnosis.setResult(result);
-				diagnosis.setOwner(loggedUser);
-				diagnosisService.save(diagnosis);
 				
 				PageParameters params = new PageParameters();
 				params.add("entityId", diagnosis.getId());
