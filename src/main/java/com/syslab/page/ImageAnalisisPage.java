@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.form.DropDownChoice;
@@ -72,35 +71,30 @@ public class ImageAnalisisPage extends MainBasePage {
 
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-				Diagnosis diagnosis = (Diagnosis) form.getModelObject();
-				
+				Diagnosis diagnosis = (Diagnosis) form.getModelObject();				
 				FileUpload fileUpload = fileUploader.getFileUpload();
-				byte[] fileBytes = fileUpload.getBytes();
 				
-				String tempDirectoryName = loggedUser.toString();
-				File tempDirectory = new File(tempDirectoryName);
-				if (!tempDirectory.exists()) tempDirectory.mkdir(); 
-				
-				String imagePath = tempDirectoryName + "/" + fileUpload.getClientFileName();
+				String originalPath = fileUpload.getClientFileName();
+				String transformedPath = "transformed-" + fileUpload.getClientFileName();
+
 				try {
-					FileOutputStream fos = new FileOutputStream(imagePath);
+					FileOutputStream fos = new FileOutputStream(originalPath);
+					byte[] fileBytes = fileUpload.getBytes();
 					fos.write(fileBytes);
 					fos.close();
 				} catch (Exception e) {
 					throw new RuntimeException(e);
 				}
 				
-				Double result = imageAnalizer.analize(imagePath);
+				Double result = imageAnalizer.analize(originalPath, transformedPath);
 				diagnosis.setResult(result);
-				
-				File file = new File(imagePath);
-				file.delete();
-				tempDirectory.delete();
 				
 				PageParameters params = new PageParameters();
 				String entity = new Gson().toJson(diagnosis);
 				params.add("entity", entity);
-				setResponsePage(new ImageDetailsPage(params));
+				params.add("originalPath", originalPath);
+				params.add("transformedPath", transformedPath);
+				setResponsePage(new ShowImagePage(params));
 			}
 			
 			

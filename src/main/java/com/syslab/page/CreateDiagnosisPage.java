@@ -95,17 +95,12 @@ public class CreateDiagnosisPage extends MainBasePage {
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
 				Diagnosis diagnosis = (Diagnosis) form.getModelObject();
-				
 				FileUpload fileUpload = fileUploader.getFileUpload();
-				byte[] fileBytes = fileUpload.getBytes();
 				
-				String tempDirectoryName = loggedUser.toString();
-				File tempDirectory = new File(tempDirectoryName);
-				if (!tempDirectory.exists()) tempDirectory.mkdir(); 
-				
-				String imagePath = tempDirectoryName + "/" + fileUpload.getClientFileName();
+				String imagePath = fileUpload.getClientFileName();
 				try {
 					FileOutputStream fos = new FileOutputStream(imagePath);
+					byte[] fileBytes = fileUpload.getBytes();
 					fos.write(fileBytes);
 					fos.close();
 				} catch (Exception e) {
@@ -115,14 +110,15 @@ public class CreateDiagnosisPage extends MainBasePage {
 				Double result = imageAnalizer.analize(imagePath);
 				diagnosis.setResult(result);
 				
-				File file = new File(imagePath);
-				file.delete();
-				tempDirectory.delete();
+				File tempImage = new File(imagePath);
+				tempImage.delete();
+				
+				diagnosis.setOwner(loggedUser);
+				diagnosisService.save(diagnosis);
 				
 				PageParameters params = new PageParameters();
-				String entity = new Gson().toJson(diagnosis);
-				params.add("entity", entity);
-				setResponsePage(new ImageDetailsPage(params));
+				params.add("entityId", diagnosis.getId());
+				setResponsePage(new ShowDiagnosisPage(params));
 			}
 
 			@Override

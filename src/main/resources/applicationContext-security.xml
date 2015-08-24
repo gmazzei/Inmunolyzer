@@ -12,6 +12,7 @@
 		<intercept-url pattern="/SignUpPage" access="permitAll" />
 		<intercept-url pattern="/ImageAnalisisPage*" access="isAuthenticated()" />
 		<intercept-url pattern="/ImageDetailsPage*" access="isAuthenticated()" />
+		<intercept-url pattern="/ShowImagePage*" access="isAuthenticated()" />
 		<intercept-url pattern="/DiagnosisListPage*" access="isAuthenticated()" />
 		<intercept-url pattern="/ShowDiagnosisPage*" access="isAuthenticated()" />
 		<intercept-url pattern="/CreateDiagnosisPage*" access="isAuthenticated()" />

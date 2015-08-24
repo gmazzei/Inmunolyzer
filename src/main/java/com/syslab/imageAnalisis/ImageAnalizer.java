@@ -17,15 +17,32 @@ public class ImageAnalizer {
 	private static final Color BACKGROUND = new Color(253, 232, 170);
 	private static final Color NORMAL_CELL = new Color(199, 195, 141);
 	private static final Color BAD_CELL = new Color(134, 91, 57);
-	
+	private static final Color FRAME = Color.BLACK;
 	
 	public Double analize(String imagePath) {
 		
 		try {
-			Image img = ImageIO.read(new File(imagePath));
-			BufferedImage bImage = (BufferedImage) img;			
-			Map<Color, Integer> colors = this.getColorCount(bImage);
-			Double badCellPercentage = colors.get(BAD_CELL).doubleValue() * 100 / (colors.get(NORMAL_CELL).doubleValue() + colors.get(BAD_CELL).doubleValue());
+			BufferedImage bImage = ImageIO.read(new File(imagePath));
+			Map<Color, Integer> colorCount = this.getColorCount(bImage);
+			Double badCellPercentage = colorCount.get(BAD_CELL).doubleValue() * 100 / (colorCount.get(NORMAL_CELL).doubleValue() + colorCount.get(BAD_CELL).doubleValue());
+			return badCellPercentage;
+			
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	public Double analize(String imagePath, String transformedImagePath) {
+		
+		try {
+			BufferedImage bImage = ImageIO.read(new File(imagePath));			
+			
+			Map<Color, Integer> colorCount = this.getColorCount(bImage);
+			Double badCellPercentage = colorCount.get(BAD_CELL).doubleValue() * 100 / (colorCount.get(NORMAL_CELL).doubleValue() + colorCount.get(BAD_CELL).doubleValue());
+			
+			File file = new File(transformedImagePath);
+			ImageIO.write(bImage, "png", file);
+			
 			return badCellPercentage;
 			
 		} catch (Exception e) {
@@ -35,12 +52,20 @@ public class ImageAnalizer {
 	
 	
 	private Map<Color, Integer> getColorCount(BufferedImage bufferedImage) {
-		final Map<Color, Integer> colorsMap = new HashMap<Color, Integer>();
+		Map<Color, Integer> colorsMap = new HashMap<Color, Integer>();
+		Map<Color, Color> complementMap = new HashMap<Color, Color>();
 		
-		//Basic colors
+		//Color count
 		colorsMap.put(BACKGROUND, 0);
 		colorsMap.put(NORMAL_CELL, 0);
 		colorsMap.put(BAD_CELL, 0);
+		colorsMap.put(FRAME, 0);
+		
+		complementMap.put(BACKGROUND, Color.GRAY);
+		complementMap.put(NORMAL_CELL, Color.BLUE);
+		complementMap.put(BAD_CELL, Color.RED);
+		complementMap.put(FRAME, Color.DARK_GRAY);
+		
 		
 		for (int x = 0; x < bufferedImage.getWidth(); x++) {
 			for (int y = 0; y < bufferedImage.getHeight(); y++) {
@@ -63,16 +88,20 @@ public class ImageAnalizer {
 				
 				int count = colorsMap.get(closestColor);
 				colorsMap.put(closestColor, count + 1);
+				
+				Color complement = complementMap.get(closestColor);
+				bufferedImage.setRGB(x, y, complement.getRGB());
 			}
 		}
 		
+		/*
 		System.out.println("Colors");
 		System.out.println("---------");
 		Integer total = bufferedImage.getHeight() * bufferedImage.getWidth(); 
 		System.out.println("Background \t => " + (colorsMap.get(BACKGROUND).doubleValue() * 100 / total) + "%");
 		System.out.println("Normal Cells \t => " + (colorsMap.get(NORMAL_CELL).doubleValue() * 100 / total) + "%");
 		System.out.println("Bad Cells \t => " + (colorsMap.get(BAD_CELL).doubleValue() * 100 / total)  + "%");
-		
+		*/
 		Double finalResult = colorsMap.get(BAD_CELL).doubleValue() * 100 / (colorsMap.get(NORMAL_CELL).doubleValue() + colorsMap.get(BAD_CELL).doubleValue());
 		System.out.println("Percentage \t => " + finalResult + "%");
 		

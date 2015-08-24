@@ -14,6 +14,7 @@ import com.syslab.page.ImageDetailsPage;
 import com.syslab.page.LoginPage;
 import com.syslab.page.MainBasePage;
 import com.syslab.page.ShowDiagnosisPage;
+import com.syslab.page.ShowImagePage;
 import com.syslab.page.ShowUserPage;
 import com.syslab.page.SignUpPage;
 import com.syslab.page.StatisticsPage;
@@ -57,6 +58,7 @@ public class WicketApplication extends AuthenticatedWebApplication {
 		mountPage("UpdatePasswordPage", UpdatePasswordPage.class);
 		mountPage("StatisticsPage", StatisticsPage.class);
 		mountPage("ErrorPage", ErrorPage.class);
+		mountPage("ShowImagePage", ShowImagePage.class);
 		
 	}
 
