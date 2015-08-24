@@ -20,7 +20,9 @@ import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.apache.wicket.util.file.File;
 
+import com.google.gson.Gson;
 import com.syslab.component.Noty;
 import com.syslab.entity.Diagnosis;
 import com.syslab.entity.Technique;
@@ -93,24 +95,34 @@ public class CreateDiagnosisPage extends MainBasePage {
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
 				Diagnosis diagnosis = (Diagnosis) form.getModelObject();
+				
 				FileUpload fileUpload = fileUploader.getFileUpload();
 				byte[] fileBytes = fileUpload.getBytes();
-			
-				String path = "/home/gabriel/testImages/" + fileUpload.getClientFileName();
+				
+				String tempDirectoryName = loggedUser.toString();
+				File tempDirectory = new File(tempDirectoryName);
+				if (!tempDirectory.exists()) tempDirectory.mkdir(); 
+				
+				String imagePath = tempDirectoryName + "/" + fileUpload.getClientFileName();
 				try {
-					FileOutputStream fos = new FileOutputStream(path);
+					FileOutputStream fos = new FileOutputStream(imagePath);
 					fos.write(fileBytes);
 					fos.close();
 				} catch (Exception e) {
 					throw new RuntimeException(e);
 				}
 				
-				Double result = imageAnalizer.analize(path);
+				Double result = imageAnalizer.analize(imagePath);
 				diagnosis.setResult(result);
 				
+				File file = new File(imagePath);
+				file.delete();
+				tempDirectory.delete();
+				
 				PageParameters params = new PageParameters();
-				params.add("entityId", diagnosis.getId());
-				setResponsePage(new ShowDiagnosisPage(params));
+				String entity = new Gson().toJson(diagnosis);
+				params.add("entity", entity);
+				setResponsePage(new ImageDetailsPage(params));
 			}
 
 			@Override

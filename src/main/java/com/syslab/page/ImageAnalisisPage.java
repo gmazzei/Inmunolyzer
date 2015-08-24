@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.form.DropDownChoice;
@@ -18,6 +19,7 @@ import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.apache.wicket.util.file.File;
 
 import com.google.gson.Gson;
 import com.syslab.component.Noty;
@@ -67,7 +69,7 @@ public class ImageAnalisisPage extends MainBasePage {
 		
 		
 		AjaxButton ajaxButton = new AjaxButton("submit") {
-						
+
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
 				Diagnosis diagnosis = (Diagnosis) form.getModelObject();
@@ -75,24 +77,33 @@ public class ImageAnalisisPage extends MainBasePage {
 				FileUpload fileUpload = fileUploader.getFileUpload();
 				byte[] fileBytes = fileUpload.getBytes();
 				
-				String path = "/home/gabriel/InmunolyzerImages/" + fileUpload.getClientFileName();
+				String tempDirectoryName = loggedUser.toString();
+				File tempDirectory = new File(tempDirectoryName);
+				if (!tempDirectory.exists()) tempDirectory.mkdir(); 
+				
+				String imagePath = tempDirectoryName + "/" + fileUpload.getClientFileName();
 				try {
-					FileOutputStream fos = new FileOutputStream(path);
+					FileOutputStream fos = new FileOutputStream(imagePath);
 					fos.write(fileBytes);
 					fos.close();
 				} catch (Exception e) {
 					throw new RuntimeException(e);
 				}
 				
-				Double result = imageAnalizer.analize(path);
+				Double result = imageAnalizer.analize(imagePath);
 				diagnosis.setResult(result);
+				
+				File file = new File(imagePath);
+				file.delete();
+				tempDirectory.delete();
 				
 				PageParameters params = new PageParameters();
 				String entity = new Gson().toJson(diagnosis);
 				params.add("entity", entity);
 				setResponsePage(new ImageDetailsPage(params));
 			}
-
+			
+			
 			@Override
 			protected void onError(AjaxRequestTarget target, Form<?> form) {
 				List<String> messages = new ArrayList<String>();
@@ -106,6 +117,7 @@ public class ImageAnalisisPage extends MainBasePage {
 				new Noty().show(messages, target);
 			}
 		};
+		
 		
 		form.add(ajaxButton);
 		

@@ -14,28 +14,23 @@ import org.springframework.stereotype.Service;
 @Service
 public class ImageAnalizer {
 	
+	private static final Color BACKGROUND = new Color(253, 232, 170);
+	private static final Color NORMAL_CELL = new Color(199, 195, 141);
+	private static final Color BAD_CELL = new Color(134, 91, 57);
+	
+	
 	public Double analize(String imagePath) {
 		
 		try {
 			Image img = ImageIO.read(new File(imagePath));
 			BufferedImage bImage = (BufferedImage) img;			
-			
 			Map<Color, Integer> colors = this.getColorCount(bImage);
-			
-			System.out.println("Colors");
-			System.out.println("-------");
-			for (Map.Entry<Color, Integer> entry : colors.entrySet()) {
-			    Color key = entry.getKey();
-			    Integer value = entry.getValue();
-			    System.out.println("RGB code: (" + key.getRed() + "," + key.getGreen() + "," + key.getBlue() + ") => Count: " + value);
-			}
+			Double badCellPercentage = colors.get(BAD_CELL).doubleValue() * 100 / (colors.get(NORMAL_CELL).doubleValue() + colors.get(BAD_CELL).doubleValue());
+			return badCellPercentage;
 			
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
-		
-		
-		return Math.random() * 100.0; //Hardcodeado		
 	}
 	
 	
@@ -43,17 +38,12 @@ public class ImageAnalizer {
 		final Map<Color, Integer> colorsMap = new HashMap<Color, Integer>();
 		
 		//Basic colors
-		colorsMap.put(Color.RED, 0);
-		colorsMap.put(Color.GREEN, 0);
-		colorsMap.put(Color.BLUE, 0);
-		colorsMap.put(Color.WHITE, 0);
-		colorsMap.put(Color.BLACK, 0);
-		
-		//int total = bufferedImage.getWidth();
+		colorsMap.put(BACKGROUND, 0);
+		colorsMap.put(NORMAL_CELL, 0);
+		colorsMap.put(BAD_CELL, 0);
 		
 		for (int x = 0; x < bufferedImage.getWidth(); x++) {
 			for (int y = 0; y < bufferedImage.getHeight(); y++) {
-				//System.out.println(x * 100 / total);
 				Color color = new Color(bufferedImage.getRGB(x, y));
 				Double minorDistance = Double.MAX_VALUE;
 				
@@ -75,6 +65,16 @@ public class ImageAnalizer {
 				colorsMap.put(closestColor, count + 1);
 			}
 		}
+		
+		System.out.println("Colors");
+		System.out.println("---------");
+		Integer total = bufferedImage.getHeight() * bufferedImage.getWidth(); 
+		System.out.println("Background \t => " + (colorsMap.get(BACKGROUND).doubleValue() * 100 / total) + "%");
+		System.out.println("Normal Cells \t => " + (colorsMap.get(NORMAL_CELL).doubleValue() * 100 / total) + "%");
+		System.out.println("Bad Cells \t => " + (colorsMap.get(BAD_CELL).doubleValue() * 100 / total)  + "%");
+		
+		Double finalResult = colorsMap.get(BAD_CELL).doubleValue() * 100 / (colorsMap.get(NORMAL_CELL).doubleValue() + colorsMap.get(BAD_CELL).doubleValue());
+		System.out.println("Percentage \t => " + finalResult + "%");
 		
 		return colorsMap;
 	}
