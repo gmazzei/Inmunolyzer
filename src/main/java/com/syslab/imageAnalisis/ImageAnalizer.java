@@ -3,11 +3,8 @@ package com.syslab.imageAnalisis;
 import java.awt.Color;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
-
-import javax.imageio.ImageIO;
 
 import org.springframework.stereotype.Service;
 
@@ -19,37 +16,21 @@ public class ImageAnalizer {
 	private static final Color BAD_CELL = new Color(134, 91, 57);
 	private static final Color FRAME = Color.BLACK;
 	
-	public Double analize(String imagePath) {
+	public AnalisisResult analize(Image image) {
 		
-		try {
-			BufferedImage bImage = ImageIO.read(new File(imagePath));
-			Map<Color, Integer> colorCount = this.getColorCount(bImage);
-			Double badCellPercentage = colorCount.get(BAD_CELL).doubleValue() * 100 / (colorCount.get(NORMAL_CELL).doubleValue() + colorCount.get(BAD_CELL).doubleValue());
-			return badCellPercentage;
-			
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
-	
-	public Double analize(String imagePath, String transformedImagePath) {
+		BufferedImage original = (BufferedImage) image;
+		BufferedImage transformed = ImageUtils.deepCopy(original);
 		
-		try {
-			BufferedImage bImage = ImageIO.read(new File(imagePath));			
-			
-			Map<Color, Integer> colorCount = this.getColorCount(bImage);
-			Double badCellPercentage = colorCount.get(BAD_CELL).doubleValue() * 100 / (colorCount.get(NORMAL_CELL).doubleValue() + colorCount.get(BAD_CELL).doubleValue());
-			
-			File file = new File(transformedImagePath);
-			ImageIO.write(bImage, "png", file);
-			
-			return badCellPercentage;
-			
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
+		Map<Color, Integer> colorCount = this.getColorCount(transformed);
+		Double badCellPercentage = colorCount.get(BAD_CELL).doubleValue() * 100 / (colorCount.get(NORMAL_CELL).doubleValue() + colorCount.get(BAD_CELL).doubleValue());
+		
+		AnalisisResult result = new AnalisisResult();
+		result.setBadCellPercentage(badCellPercentage.doubleValue());
+		result.setOriginalImage(image);
+		result.setTransformedImage(transformed);
+		return result;
 	}
-	
+
 	
 	private Map<Color, Integer> getColorCount(BufferedImage bufferedImage) {
 		Map<Color, Integer> colorsMap = new HashMap<Color, Integer>();
@@ -94,17 +75,6 @@ public class ImageAnalizer {
 			}
 		}
 		
-		/*
-		System.out.println("Colors");
-		System.out.println("---------");
-		Integer total = bufferedImage.getHeight() * bufferedImage.getWidth(); 
-		System.out.println("Background \t => " + (colorsMap.get(BACKGROUND).doubleValue() * 100 / total) + "%");
-		System.out.println("Normal Cells \t => " + (colorsMap.get(NORMAL_CELL).doubleValue() * 100 / total) + "%");
-		System.out.println("Bad Cells \t => " + (colorsMap.get(BAD_CELL).doubleValue() * 100 / total)  + "%");
-		*/
-		Double finalResult = colorsMap.get(BAD_CELL).doubleValue() * 100 / (colorsMap.get(NORMAL_CELL).doubleValue() + colorsMap.get(BAD_CELL).doubleValue());
-		System.out.println("Percentage \t => " + finalResult + "%");
-		
 		return colorsMap;
 	}
 	
@@ -118,30 +88,5 @@ public class ImageAnalizer {
 		
 		return Math.sqrt(Math.pow(r2 - r1, 2) + Math.pow(g2 - g1, 2) + Math.pow(b2 - b1, 2));
 	}
-
-	/*
-	private Map<Color, Integer> getColorCount(BufferedImage bufferedImage) {
-		final Map<Color, Integer> colors = new HashMap<Color, Integer>();
-		
-		int red = Color.RED.getRGB();
-		int green = Color.GREEN.getRGB();
-		int blue = Color.BLUE.getRGB();
-		
-		for (int x = 0; x < bufferedImage.getWidth(); x++) {
-			for (int y = 0; y < bufferedImage.getHeight(); y++) {
-				Color pixelColor = new Color(bufferedImage.getRGB(x, y));
-				
-				Integer count = colors.get(pixelColor);
-				if (count == null) {
-					colors.put(pixelColor, 1);
-				} else {
-					colors.put(pixelColor, count + 1);
-				}
-			}			
-		}
-		
-		return colors;
-	}
-	*/
 	
 }

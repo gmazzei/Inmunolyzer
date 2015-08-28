@@ -1,9 +1,12 @@
 package com.syslab.page;
 
-import java.io.FileOutputStream;
+import java.awt.Image;
+import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import javax.imageio.ImageIO;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
@@ -20,12 +23,11 @@ import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.apache.wicket.util.file.File;
 
-import com.google.gson.Gson;
 import com.syslab.component.Noty;
 import com.syslab.entity.Diagnosis;
 import com.syslab.entity.Technique;
+import com.syslab.imageAnalisis.AnalisisResult;
 import com.syslab.imageAnalisis.ImageAnalizer;
 import com.syslab.service.DiagnosisService;
 
@@ -94,31 +96,23 @@ public class CreateDiagnosisPage extends MainBasePage {
 
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-				Diagnosis diagnosis = (Diagnosis) form.getModelObject();
-				FileUpload fileUpload = fileUploader.getFileUpload();
-				
-				String imagePath = fileUpload.getClientFileName();
-				try {
-					FileOutputStream fos = new FileOutputStream(imagePath);
-					byte[] fileBytes = fileUpload.getBytes();
-					fos.write(fileBytes);
-					fos.close();
-				} catch (Exception e) {
-					throw new RuntimeException(e);
+				try {					
+					Diagnosis diagnosis = (Diagnosis) form.getModelObject();
+					byte[] bytes = fileUploader.getFileUpload().getBytes();
+					Image image = ImageIO.read(new ByteArrayInputStream(bytes));
+					
+					AnalisisResult analisisResult = imageAnalizer.analize(image);
+					diagnosis.setResult(analisisResult.getBadCellPercentage());
+					
+					diagnosis.setOwner(loggedUser);
+					diagnosisService.save(diagnosis);
+					
+					PageParameters params = new PageParameters();
+					params.add("entityId", diagnosis.getId());
+					setResponsePage(new ShowDiagnosisPage(params));
+				} catch (Exception ex) {
+					throw new RuntimeException(ex);
 				}
-				
-				Double result = imageAnalizer.analize(imagePath);
-				diagnosis.setResult(result);
-				
-				File tempImage = new File(imagePath);
-				tempImage.delete();
-				
-				diagnosis.setOwner(loggedUser);
-				diagnosisService.save(diagnosis);
-				
-				PageParameters params = new PageParameters();
-				params.add("entityId", diagnosis.getId());
-				setResponsePage(new ShowDiagnosisPage(params));
 			}
 
 			@Override

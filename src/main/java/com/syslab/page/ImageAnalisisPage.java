@@ -1,9 +1,13 @@
 package com.syslab.page;
 
-import java.io.FileOutputStream;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import javax.imageio.ImageIO;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
@@ -18,12 +22,12 @@ import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.apache.wicket.util.file.File;
 
 import com.google.gson.Gson;
 import com.syslab.component.Noty;
 import com.syslab.entity.Diagnosis;
 import com.syslab.entity.Technique;
+import com.syslab.imageAnalisis.AnalisisResult;
 import com.syslab.imageAnalisis.ImageAnalizer;
 
 public class ImageAnalisisPage extends MainBasePage {
@@ -71,30 +75,25 @@ public class ImageAnalisisPage extends MainBasePage {
 
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-				Diagnosis diagnosis = (Diagnosis) form.getModelObject();				
-				FileUpload fileUpload = fileUploader.getFileUpload();
 				
-				String originalPath = fileUpload.getClientFileName();
-				String transformedPath = "transformed-" + fileUpload.getClientFileName();
-
-				try {
-					FileOutputStream fos = new FileOutputStream(originalPath);
-					byte[] fileBytes = fileUpload.getBytes();
-					fos.write(fileBytes);
-					fos.close();
-				} catch (Exception e) {
-					throw new RuntimeException(e);
+				try {					
+					Diagnosis diagnosis = (Diagnosis) form.getModelObject();
+					byte[] bytes = fileUploader.getFileUpload().getBytes();
+					Image image = ImageIO.read(new ByteArrayInputStream(bytes));
+					
+					AnalisisResult analisisResult = imageAnalizer.analize(image);
+					diagnosis.setResult(analisisResult.getBadCellPercentage().doubleValue());
+					
+					PageParameters params = new PageParameters();
+					Gson gson = new Gson();
+					String entity = gson.toJson(diagnosis);
+					params.add("entity", entity);
+				
+					setResponsePage(new ShowImagePage(params, (BufferedImage) analisisResult.getOriginalImage(), (BufferedImage)analisisResult.getTransformedImage()));
+				} catch (Exception ex) {
+					throw new RuntimeException(ex);
 				}
-				
-				Double result = imageAnalizer.analize(originalPath, transformedPath);
-				diagnosis.setResult(result);
-				
-				PageParameters params = new PageParameters();
-				String entity = new Gson().toJson(diagnosis);
-				params.add("entity", entity);
-				params.add("originalPath", originalPath);
-				params.add("transformedPath", transformedPath);
-				setResponsePage(new ShowImagePage(params));
+							
 			}
 			
 			

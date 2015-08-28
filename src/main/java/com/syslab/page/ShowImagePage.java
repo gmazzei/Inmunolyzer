@@ -1,9 +1,6 @@
 package com.syslab.page;
 
 import java.awt.image.BufferedImage;
-import java.io.File;
-
-import javax.imageio.ImageIO;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
@@ -14,17 +11,13 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 public class ShowImagePage extends MainBasePage {
 	
-	public ShowImagePage(final PageParameters params) {
-		String originalPath = params.get("originalPath").toString();
-		Image original = buildImageResource("original", originalPath);
-		add(original);
-
-		String transformedPath = params.get("transformedPath").toString();
-		Image transformed = buildImageResource("transformed", transformedPath);
-		add(transformed);
+	public ShowImagePage(final PageParameters params, BufferedImage originalImage, BufferedImage transformedImage) {
 		
-		deleteTemporaryFile(originalPath);
-		deleteTemporaryFile(transformedPath);
+		Image original = buildImageResource("original", originalImage);
+		add(original);
+			
+		Image transformed = buildImageResource("transformed", transformedImage);
+		add(transformed);			
 		
 		AjaxLink<ImageDetailsPage> continueButton = new AjaxLink<ImageDetailsPage>("continue") {	
 			@Override
@@ -46,20 +39,10 @@ public class ShowImagePage extends MainBasePage {
 	}
 	
 	
-	private Image buildImageResource(String id, String path) {
-		try {
-			BufferedDynamicImageResource resource = new BufferedDynamicImageResource();
-			BufferedImage bImage = ImageIO.read(new File(path));
-			resource.setImage(bImage);
-			return new Image(id, resource);			
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
-	
-	private void deleteTemporaryFile(String path) {
-		File image = new File(path);
-		image.delete();
+	private Image buildImageResource(String id, BufferedImage image) {
+		BufferedDynamicImageResource resource = new BufferedDynamicImageResource();
+		resource.setImage(image);
+		return new Image(id, resource);
 	}
 	
 }
