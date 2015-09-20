@@ -31,4 +31,4 @@ Pasos para instalar MySQL en Linux:
 <code>SET PASSWORD FOR 'xxxx'@'localhost' = PASSWORD('xxxx');</code> (Según el usuario y password que quieran usar)
 <br>
 
-Ahora debemos correr el archivo initdb.sql y estaremos listos para levantar el sistema con base de datos.
+Ahora debemos correr el archivo ScriptDB.sql y estaremos listos para levantar el sistema con base de datos.
