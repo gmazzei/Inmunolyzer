@@ -1,92 +1,91 @@
 package com.syslab.imageAnalisis;
 
-import java.awt.Color;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
+import org.opencv.core.Core;
+import org.opencv.core.Mat;
+import org.opencv.core.Scalar;
+import org.opencv.imgproc.Imgproc;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ImageAnalizer {
 	
-	private static final Color BACKGROUND = new Color(253, 232, 170);
-	private static final Color NORMAL_CELL = new Color(199, 195, 141);
-	private static final Color BAD_CELL = new Color(134, 91, 57);
-	private static final Color FRAME = Color.BLACK;
+	private static final Scalar LOW_BAD_CELL = new Scalar(7,0,0);
+	private static final Scalar HIGH_BAD_CELL = new Scalar(30,255,255);
+	private static final Scalar LOW_GOOD_CELL = new Scalar(90,30,0);
+	private static final Scalar HIGH_GOOD_CELL = new Scalar(127,255,255);
+	
+	public ImageAnalizer() {
+		setupOpenCV();
+	}
+	
+	private void setupOpenCV() {
+		try {
+			addFiles("/home/gabriel/Applications/opencv/build/lib");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void addFiles(String path) {
+		File folder = new File(path);
+		for (File file : folder.listFiles()) {
+			String filePath = file.getAbsolutePath();
+			if (filePath.endsWith("so")) {
+				System.load(filePath);
+			}
+		}
+	}
 	
 	public AnalisisResult analize(Image image) {
 		
 		BufferedImage original = (BufferedImage) image;
 		BufferedImage transformed = ImageUtils.deepCopy(original);
 		
-		Map<Color, Integer> colorCount = this.getColorCount(transformed);
-		Double badCellPercentage = colorCount.get(BAD_CELL).doubleValue() * 100 / (colorCount.get(NORMAL_CELL).doubleValue() + colorCount.get(BAD_CELL).doubleValue());
+		Map<String, Integer> cellCount = this.getAnalisisResults(transformed);
+		
+		Integer goodCells = cellCount.get("goodCellCount");
+		Integer badCells = cellCount.get("badCellCount");
+		Integer totalCells = goodCells + badCells;
 		
 		AnalisisResult result = new AnalisisResult();
-		result.setBadCellPercentage(badCellPercentage.doubleValue());
+		result.setGoodCellCount(goodCells);
+		result.setBadCellCount(badCells);
+		result.setGoodCellPercentage(goodCells * 100.0 / totalCells);
+		result.setBadCellPercentage(badCells * 100.0 / totalCells);
 		result.setOriginalImage(image);
 		result.setTransformedImage(transformed);
+		
 		return result;
 	}
 
 	
-	private Map<Color, Integer> getColorCount(BufferedImage bufferedImage) {
-		Map<Color, Integer> colorsMap = new HashMap<Color, Integer>();
-		Map<Color, Color> complementMap = new HashMap<Color, Color>();
-		
-		//Color count
-		colorsMap.put(BACKGROUND, 0);
-		colorsMap.put(NORMAL_CELL, 0);
-		colorsMap.put(BAD_CELL, 0);
-		colorsMap.put(FRAME, 0);
-		
-		complementMap.put(BACKGROUND, Color.GRAY);
-		complementMap.put(NORMAL_CELL, Color.BLUE);
-		complementMap.put(BAD_CELL, Color.RED);
-		complementMap.put(FRAME, Color.DARK_GRAY);
-		
-		
-		for (int x = 0; x < bufferedImage.getWidth(); x++) {
-			for (int y = 0; y < bufferedImage.getHeight(); y++) {
-				Color color = new Color(bufferedImage.getRGB(x, y));
-				Double minorDistance = Double.MAX_VALUE;
-				
-				Color closestColor = null;
-				Double distance;
-				Color basicColor;
-				
-				for (Map.Entry<Color, Integer> entry : colorsMap.entrySet()) {
-				    basicColor = entry.getKey();
-				    distance = calculateDistance(color, basicColor);
-				    
-				    if (distance <= minorDistance) {
-				    	closestColor = basicColor;
-				    	minorDistance = distance;
-				    }
-				}
-				
-				int count = colorsMap.get(closestColor);
-				colorsMap.put(closestColor, count + 1);
-				
-				Color complement = complementMap.get(closestColor);
-				bufferedImage.setRGB(x, y, complement.getRGB());
-			}
-		}
-		
-		return colorsMap;
-	}
-	
-	private Double calculateDistance(Color firstColor, Color secondColor) {
-		int r1 = firstColor.getRed();
-		int r2 = secondColor.getRed();
-		int g1 = firstColor.getGreen();
-		int g2 = secondColor.getGreen();
-		int b1 = firstColor.getBlue();
-		int b2 = secondColor.getBlue();
-		
-		return Math.sqrt(Math.pow(r2 - r1, 2) + Math.pow(g2 - g1, 2) + Math.pow(b2 - b1, 2));
-	}
+	private Map<String, Integer> getAnalisisResults(BufferedImage image) {
+	    Mat src = ImageUtils.toMat(image);
+	    
+	    Mat hsvsrc = new Mat();
+	    Mat badCellFilter = new Mat();
+	    Mat goodCellFilter = new Mat();
+	    
+	    Imgproc.cvtColor(src, hsvsrc, Imgproc.COLOR_BGR2HSV);
+	    	
+	    Core.inRange(hsvsrc, LOW_BAD_CELL, HIGH_BAD_CELL, badCellFilter);
+	    Core.inRange(hsvsrc, LOW_GOOD_CELL, HIGH_GOOD_CELL, goodCellFilter);
+	    
+	    Integer nonZeroBadCell = Core.countNonZero(badCellFilter);
+	    Integer nonZeroGoodCell = Core.countNonZero(goodCellFilter);
+	    
+		HashMap<String, Integer> map = new HashMap<String, Integer>();
+		map.put("goodCellCount", nonZeroGoodCell);
+		map.put("badCellCount", nonZeroBadCell);		
+		return map;
+	}	
 	
 }

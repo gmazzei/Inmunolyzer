@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "diagnosis")
@@ -31,6 +32,18 @@ public class Diagnosis implements Serializable {
 	
 	@Column(name = "result")
 	private Double result;
+	
+	@Transient
+	private Integer goodCellCount;
+	
+	@Transient
+	private Integer badCellCount;
+	
+	@Transient
+	private Double goodCellPercentage;
+	
+	@Transient
+	private Double badCellPercentage;
 	
 	@Column(name = "creation_date", nullable = false)
 	private Date creationDate;
@@ -105,6 +118,38 @@ public class Diagnosis implements Serializable {
 
 	public void setCreationDate(Date creationDate) {
 		this.creationDate = creationDate;
+	}
+
+	public Integer getGoodCellCount() {
+		return goodCellCount;
+	}
+
+	public void setGoodCellCount(Integer goodCellCount) {
+		this.goodCellCount = goodCellCount;
+	}
+
+	public Integer getBadCellCount() {
+		return badCellCount;
+	}
+
+	public void setBadCellCount(Integer badCellCount) {
+		this.badCellCount = badCellCount;
+	}
+
+	public Double getGoodCellPercentage() {
+		return goodCellPercentage;
+	}
+
+	public void setGoodCellPercentage(Double goodCellPercentage) {
+		this.goodCellPercentage = goodCellPercentage;
+	}
+
+	public Double getBadCellPercentage() {
+		return badCellPercentage;
+	}
+
+	public void setBadCellPercentage(Double badCellPercentage) {
+		this.badCellPercentage = badCellPercentage;
 	}
 	
 }

@@ -15,12 +15,14 @@ import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.upload.FileUpload;
 import org.apache.wicket.markup.html.form.upload.FileUploadField;
+import org.apache.wicket.markup.html.image.resource.BufferedDynamicImageResource;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.apache.wicket.request.resource.DynamicImageResource;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.google.gson.Gson;
@@ -83,12 +85,16 @@ public class ImageAnalisisPage extends MainBasePage {
 					
 					AnalisisResult analisisResult = imageAnalizer.analize(image);
 					diagnosis.setResult(analisisResult.getBadCellPercentage().doubleValue());
+					diagnosis.setGoodCellCount(analisisResult.getGoodCellCount());
+					diagnosis.setBadCellCount(analisisResult.getBadCellCount());
+					diagnosis.setGoodCellPercentage(analisisResult.getGoodCellPercentage());
+					diagnosis.setBadCellPercentage(analisisResult.getBadCellPercentage());
 					
 					PageParameters params = new PageParameters();
 					Gson gson = new Gson();
 					String entity = gson.toJson(diagnosis);
 					params.add("entity", entity);
-				
+					
 					setResponsePage(new ShowImagePage(params, (BufferedImage) analisisResult.getOriginalImage(), (BufferedImage)analisisResult.getTransformedImage()));
 				} catch (Exception ex) {
 					throw new RuntimeException(ex);
