@@ -2,7 +2,7 @@ package com.syslab.entity;
 
 public enum Technique {
 	
-	KI32("KI-32");
+	KI67("KI-67");
 	
 	private String value;
 

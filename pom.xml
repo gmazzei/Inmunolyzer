@@ -167,13 +167,6 @@
 			<version>2.3.1</version>
 		</dependency>
 		
-		<!-- JAVACV -->
-		<dependency>
-			<groupId>org.bytedeco</groupId>
-			<artifactId>javacv</artifactId>
-			<version>1.0</version>
-		</dependency>
-		
 		<!-- WICKED-CHARTS -->
 		
 		<dependency>
