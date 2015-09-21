@@ -3,10 +3,8 @@ package com.syslab.imageAnalisis;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
 
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
@@ -28,7 +26,7 @@ public class ImageAnalizer {
 	
 	private void setupOpenCV() {
 		try {
-			addFiles("/home/gabriel/Applications/opencv/build/lib");
+			addFiles("openCV/lib");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
