@@ -26,7 +26,7 @@ public class Diagnosis implements Serializable {
 	
 	@Column(name = "description")
 	private String description;
-	
+		
 	@Column(name = "technique")
 	private Technique technique;
 	
@@ -49,8 +49,8 @@ public class Diagnosis implements Serializable {
 	private Date creationDate;
 	
 	@ManyToOne
-	@JoinColumn(name = "user_id")
-	private User owner;
+	@JoinColumn(name = "patient_id")
+	private Patient patient;
 	
 	public Diagnosis() {
 		this.creationDate = new Date();
@@ -103,13 +103,13 @@ public class Diagnosis implements Serializable {
 	public void setResult(Double result) {
 		this.result = result;
 	}
-
-	public User getOwner() {
-		return owner;
+	
+	public Patient getPatient() {
+		return patient;
 	}
 
-	public void setOwner(User owner) {
-		this.owner = owner;
+	public void setPatient(Patient patient) {
+		this.patient = patient;
 	}
 
 	public Date getCreationDate() {
@@ -151,5 +151,6 @@ public class Diagnosis implements Serializable {
 	public void setBadCellPercentage(Double badCellPercentage) {
 		this.badCellPercentage = badCellPercentage;
 	}
+	
 	
 }

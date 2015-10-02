@@ -4,7 +4,13 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.form.DropDownChoice;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.LoadableDetachableModel;
+import org.apache.wicket.model.Model;
 
 import com.googlecode.wickedcharts.highcharts.options.Axis;
 import com.googlecode.wickedcharts.highcharts.options.ChartOptions;
@@ -24,63 +30,98 @@ import com.googlecode.wickedcharts.highcharts.options.series.Series;
 import com.googlecode.wickedcharts.highcharts.options.series.SimpleSeries;
 import com.googlecode.wickedcharts.wicket6.highcharts.Chart;
 import com.syslab.entity.Diagnosis;
+import com.syslab.entity.Patient;
 
 public class StatisticsPage extends MainBasePage {
-	
-	private static final int THRESHOLD = 50;
-	
+		
 	public StatisticsPage() {
 		
 		final WebMarkupContainer chartPanel = new WebMarkupContainer("chartPanel");
 		chartPanel.setOutputMarkupId(true);
 		this.add(chartPanel);
 		
-		Chart acceptedDiagnosisChart = buildResultsChart("resultsChart"); 
-		chartPanel.add(acceptedDiagnosisChart);
+		Options pieOptions = buildResultsChartOptions(null);
+		final Chart resultsDiagnosisChart = new Chart("resultsChart", pieOptions);
+		chartPanel.add(resultsDiagnosisChart);
 		
-		Chart timelineChart = buildTimelineChart("timelineChart");
+		
+		
+		Options timelineOptions = buildTimelineChartOptions();
+		final Chart timelineChart = new Chart("timelineChart", timelineOptions);
 		chartPanel.add(timelineChart);
+		
+		IModel<List<Patient>> patientModel = new LoadableDetachableModel<List<Patient>>() {
+
+			@Override
+			protected List<Patient> load() {
+				return loggedUser.getPatients();
+			}
+			
+		};
+		
+		final DropDownChoice<Patient> patientField = new DropDownChoice<Patient>("patient", patientModel);
+		patientField.setModel(Model.of(new Patient()));
+		patientField.add(new AjaxFormComponentUpdatingBehavior("onchange") {
+			
+			@Override
+			protected void onUpdate(AjaxRequestTarget target) {
+				Patient selectedPatient = (Patient) patientField.getModelObject();
+				Options options = buildResultsChartOptions(selectedPatient);
+				resultsDiagnosisChart.setOptions(options);
+				target.add(chartPanel);
+			}
+			
+		});
+		
+		this.add(patientField);
+		
 	}
 	
 	
 
-	private Chart buildResultsChart(String chartId) {
+	private Options buildResultsChartOptions(Patient patient) {
 		
-		List<Diagnosis> diagnoses = this.loggedUser.getDiagnoses();
-		Double positive = getPositiveDiagnosisPercentage(diagnoses);
-		Double negative = 100.0 - positive;
+		List<Diagnosis> diagnoses = patient == null ? this.loggedUser.getDiagnoses() : patient.getDiagnoses();
+		Double high = getDiagnosesPercentage(diagnoses, 70.0, 100.0);
+		Double medium = getDiagnosesPercentage(diagnoses, 30.0, 70.0);
+		Double low = getDiagnosesPercentage(diagnoses, 0.0, 30.0);
+		
 		
 		Options options = new Options();
-		options.setTitle(new Title("Results - Positive and Negative Diagnosis"));
+		options.setTitle(new Title("Mitosis cells - High, medium and low results"));
 		options.setChartOptions(new ChartOptions(SeriesType.PIE));
 		
-		Point positiveDiagnosisBar = new Point("Positive Diagnosis", positive).setColor(new HighchartsColor(1));
-		Point negativeDiagnosisBar = new Point("Negative Diagnosis", negative).setColor(new HighchartsColor(2));
+		Point highDiagnosesBar = new Point("High Percentage", high).setColor(new HighchartsColor(3));
+		Point mediumDiagnosesBar = new Point("Medium Percentage", medium).setColor(new HighchartsColor(1));
+		Point lowDiagnosesBar = new Point("Low Percentage", low).setColor(new HighchartsColor(2));
 				
 		options.addSeries(new PointSeries()
 				.setName("Percentage")
 				.setColor(new HexColor("#000000"))
-				.addPoint(positiveDiagnosisBar)
-				.addPoint(negativeDiagnosisBar));
+				.addPoint(highDiagnosesBar)
+				.addPoint(mediumDiagnosesBar)
+				.addPoint(lowDiagnosesBar));
 		
 		
-		Chart acceptedDiagnosisChart = new Chart(chartId, options);
-		return acceptedDiagnosisChart;
+		return options;
 	}
 	
-	private Double getPositiveDiagnosisPercentage(List<Diagnosis> diagnoses) {
+	private Double getDiagnosesPercentage(List<Diagnosis> diagnoses, Double min, Double max) {
 		Integer total = diagnoses.size();
 		Integer count = 0;
 		
 		for (Diagnosis diagnosis : diagnoses) {
-			if (diagnosis.getResult() >= THRESHOLD) count++; 
+			if (min <= diagnosis.getResult() && diagnosis.getResult() < max) count++; 
 		}
 		
 		Double percentage = count.doubleValue() * 100.0 / total.doubleValue();
 		return percentage;
+
 	}
 	
-	private Chart buildTimelineChart(String chartId) {
+	
+	
+	private Options buildTimelineChartOptions() {
 		
 		Options options = new Options();
 		options.setChartOptions(new ChartOptions(SeriesType.LINE));
@@ -123,9 +164,8 @@ public class StatisticsPage extends MainBasePage {
 		series3.setName("Total");
 		series3.setData(Arrays.asList(new Number[] { 9, 11, 23, 20, 22, 33, 40, 37, 44, 40, 26, 25 }));
 		options.addSeries(series3);
-
-		Chart chart = new Chart(chartId, options);
-		return chart;
+		
+		return options;
 	}
 	
 }

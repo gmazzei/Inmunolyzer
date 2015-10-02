@@ -15,34 +15,29 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.syslab.component.Noty;
-import com.syslab.entity.Diagnosis;
-import com.syslab.service.DiagnosisService;
+import com.syslab.entity.Patient;
+import com.syslab.service.PatientService;
 
-public class UpdateDiagnosisPage extends MainBasePage {
+public class CreatePatientPage extends MainBasePage {
 
 
 	@SpringBean
-	private DiagnosisService diagnosisService;
+	private PatientService patientService;
+		
 	
-	
-	public UpdateDiagnosisPage() {
-		Diagnosis diagnosis = new Diagnosis();
-		this.preparePage(diagnosis);
+	public CreatePatientPage() {
+		Patient patient = new Patient();
+		this.preparePage(patient);
 	}
 	
-	public UpdateDiagnosisPage(PageParameters params) {
-		Integer id = params.get("entityId").toInteger();
-		Diagnosis diagnosis = diagnosisService.getDiagnosis(id);
-		this.preparePage(diagnosis);
-	}
 	
-	private void preparePage(Diagnosis diagnosis) {
+	private void preparePage(Patient patient) {
 		
 		final FeedbackPanel feedbackPanel = new FeedbackPanel("feedbackPanel");
 		feedbackPanel.setOutputMarkupId(true);
 		add(feedbackPanel);
 		
-		Form<Diagnosis> form = new Form<Diagnosis>("form", new CompoundPropertyModel<Diagnosis>(Model.of(diagnosis)));
+		Form<Patient> form = new Form<Patient>("form", new CompoundPropertyModel<Patient>(Model.of(patient)));
 		add(form);
 		
 		final RequiredTextField<String> name = new RequiredTextField<String>("name");
@@ -54,16 +49,22 @@ public class UpdateDiagnosisPage extends MainBasePage {
 		form.add(description);
 				
 		
-		AjaxButton submitButton = new AjaxButton("submitButton", Model.of("Save")) {
-
+		AjaxButton submitButton = new AjaxButton("submitButton", Model.of("Create new Patient")) {
+			
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-				Diagnosis diagnosis = (Diagnosis) form.getModelObject();
-				diagnosisService.save(diagnosis);
-				
-				PageParameters params = new PageParameters();
-				params.add("entityId", diagnosis.getId());
-				setResponsePage(new ShowDiagnosisPage(params));
+				try {					
+					Patient patient = (Patient) form.getModelObject();
+					
+					patient.setOwner(loggedUser);
+					patientService.save(patient);
+					
+					PageParameters params = new PageParameters();
+					params.add("entityId", patient.getId());
+					setResponsePage(new ShowPatientPage(params));
+				} catch (Exception ex) {
+					throw new RuntimeException(ex);
+				}
 			}
 
 			@Override

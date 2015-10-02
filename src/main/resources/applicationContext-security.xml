@@ -22,6 +22,10 @@
 		<intercept-url pattern="/CreateUserPage*" access="isAuthenticated()" />
 		<intercept-url pattern="/UpdateUserPage*" access="isAuthenticated()" />
 		<intercept-url pattern="/UpdatePasswordPage*" access="isAuthenticated()" />
+		<intercept-url pattern="/PatientListPage*" access="isAuthenticated()" />
+		<intercept-url pattern="/ShowPatientPage*" access="isAuthenticated()" />
+		<intercept-url pattern="/CreatePatientPage*" access="isAuthenticated()" />
+		<intercept-url pattern="/UpdatePatientPage*" access="isAuthenticated()" />
 		<intercept-url pattern="/StatisticsPage*" access="isAuthenticated()" />
 		<form-login login-page="/LoginPage" default-target-url="/ImageAnalisisPage" username-parameter="username" password-parameter="password"/>
 	</http>

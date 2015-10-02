@@ -8,12 +8,29 @@
 		</div>
 	</div>
 	
+	<div class="row">
+			<div class="col-lg-12">
+				<section class="panel">
+					<header class="panel-heading">Select a Patient</header>
+					<div class="panel-body">
+						<div class="form-group">
+							<label class="col-sm-2 control-label">Patient</label>
+							<div class="col-sm-5">
+								<select wicket:id="patient" class="form-control"></select>
+							</div>
+						</div>
+					</div>
+				</section>
+			</div>
+		</div>
+	
+	
 	<div wicket:id="chartPanel">
 	
 		<div class="row">
 			<div class="col-lg-12">
 				<section class="panel">
-					<header class="panel-heading">Positive and Negative Diagnoses</header>
+					<header class="panel-heading">High, medium and low results</header>
 					<div class="panel-body">
 						<div wicket:id="resultsChart"></div>
 					</div>
@@ -24,7 +41,7 @@
 		<div class="row">
 			<div class="col-lg-12">
 				<section class="panel">
-					<header class="panel-heading">Diagnoses Results by Time</header>
+					<header class="panel-heading">Diagnoses results by Time</header>
 					<div class="panel-body">
 						<div wicket:id="timelineChart"></div>
 					</div>

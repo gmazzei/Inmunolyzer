@@ -1,6 +1,7 @@
 package com.syslab.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -34,7 +35,7 @@ public class User implements Serializable {
 	private Date creationDate;
 
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "owner")
-	private List<Diagnosis> diagnoses;
+	private List<Patient> patients;
 	
 	
 	public User() {
@@ -46,7 +47,15 @@ public class User implements Serializable {
 		return this.username;
 	}
 
-
+	public List<Diagnosis> getDiagnoses() {
+		List<Diagnosis> diagnoses = new ArrayList();
+		for (Patient patient : this.patients) {
+			diagnoses.addAll(patient.getDiagnoses());
+		}
+		return diagnoses;
+	}
+	
+	
 	//Getters & Setters
 
 	public String getUsername() {
@@ -73,14 +82,6 @@ public class User implements Serializable {
 		this.password = password;
 	}
 
-	public List<Diagnosis> getDiagnoses() {
-		return diagnoses;
-	}
-
-	public void setDiagnoses(List<Diagnosis> diagnoses) {
-		this.diagnoses = diagnoses;
-	}
-
 	public boolean isAdmin() {
 		return admin;
 	}
@@ -95,6 +96,14 @@ public class User implements Serializable {
 
 	public void setCreationDate(Date creationDate) {
 		this.creationDate = creationDate;
+	}
+
+	public List<Patient> getPatients() {
+		return patients;
+	}
+
+	public void setPatients(List<Patient> patients) {
+		this.patients = patients;
 	}
 	
 }

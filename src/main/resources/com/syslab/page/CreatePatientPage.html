@@ -1,6 +1,6 @@
 <wicket:head xmlns:wicket="http://wicket.apache.org">
 	<meta charset="utf-8" />
-	<title>Inmunolyzer - Create Diagnosis</title>
+	<title>Inmunolyzer - Create Patient</title>
 	<link rel="stylesheet" href="ezdz/jquery.ezdz.css" type="text/css"
 		media="screen" title="Stylesheet" />
 </wicket:head>
@@ -10,7 +10,7 @@
 	<div class="row">
 		<div class="col-lg-12">
 			<section class="panel">
-				<header class="panel-heading">Create New Diagnosis</header>
+				<header class="panel-heading">Create New Patient</header>
 				<div class="panel-body">
 					<form wicket:id="form" class="form-horizontal " method="get">
 						<div class="form-group">
@@ -27,30 +27,9 @@
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="col-sm-2 control-label">Technique</label>
-							<div class="col-sm-5">
-								<select wicket:id="technique" class="form-control"></select>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label">Patient</label>
-							<div class="col-sm-5">
-								<select wicket:id="patient" class="form-control"></select>
-							</div>
-						</div>
-						<div class="form-group">
-
-							<div class="col-sm-12">
-								<input type="file" wicket:id="image">
-								<script src="http://code.jquery.com/jquery-latest.min.js"></script>
-								<script src="ezdz/jquery.ezdz.js"></script>
-								<script type="text/javascript" src="ezdz/template.js"></script>
-							</div>
-						</div>
-						<div class="form-group">
 							<div class="col-lg-12 text-center">
 								<button type="submit" wicket:id="submitButton"
-									class="btn btn-primary">Analize Image</button>
+									class="btn btn-primary">Save</button>
 							</div>
 						</div>
 					</form>

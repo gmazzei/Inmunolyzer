@@ -26,6 +26,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.syslab.component.Noty;
 import com.syslab.entity.Diagnosis;
+import com.syslab.entity.Patient;
 import com.syslab.entity.Technique;
 import com.syslab.imageAnalisis.AnalisisResult;
 import com.syslab.imageAnalisis.ImageAnalizer;
@@ -63,6 +64,21 @@ public class CreateDiagnosisPage extends MainBasePage {
 		description.setLabel(Model.of("Description"));
 		form.add(description);
 		
+		IModel<List<Patient>> patientModel = new LoadableDetachableModel<List<Patient>>() {
+
+			@Override
+			protected List<Patient> load() {
+				return loggedUser.getPatients();
+			}
+			
+		};
+		
+		final DropDownChoice<Patient> patient = new DropDownChoice<Patient>("patient", patientModel);
+		patient.setRequired(true);
+		patient.setLabel(Model.of("Patient"));
+		form.add(patient);
+		
+
 		IModel<List<Technique>> techniqueModel = new LoadableDetachableModel<List<Technique>>() {
 
 			@Override
@@ -104,7 +120,7 @@ public class CreateDiagnosisPage extends MainBasePage {
 					AnalisisResult analisisResult = imageAnalizer.analize(image);
 					diagnosis.setResult(analisisResult.getBadCellPercentage());
 					
-					diagnosis.setOwner(loggedUser);
+					diagnosis.setPatient(patient.getModelObject());
 					diagnosisService.save(diagnosis);
 					
 					PageParameters params = new PageParameters();
