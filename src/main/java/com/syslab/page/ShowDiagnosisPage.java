@@ -20,11 +20,12 @@ public class ShowDiagnosisPage extends MainBasePage {
 		Integer id = params.get("entityId").toInt();
 		final Diagnosis diagnosis = diagnosisService.getDiagnosis(id);
 		
-		add(new Label("id", diagnosis.getId()));
 		add(new Label("name", diagnosis.getName()));
 		add(new Label("technique", diagnosis.getTechnique()));
 		add(new Label("result", diagnosis.getResult()));
+		add(new Label("patient", diagnosis.getPatient()));
 		add(new Label("description", diagnosis.getDescription()));
+		add(new Label("date", diagnosis.getCreationDate()));
 		
 		AjaxLink<Void> editButton = new AjaxLink<Void>("editButton") {
 			@Override

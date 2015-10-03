@@ -79,6 +79,9 @@ public class PatientListPage extends MainBasePage {
 				Label name = new Label("name", patient.getName());
 				item.add(name);
 				
+				Label numberOfDiagnoses = new Label("numberOfDiagnoses", patient.getDiagnoses().size());
+				item.add(numberOfDiagnoses);
+				
 				AjaxLink<Void> showButton = new AjaxLink<Void>("showButton") {
 					@Override
 					public void onClick(AjaxRequestTarget target) {

@@ -1,5 +1,7 @@
 package com.syslab.page;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -78,6 +80,14 @@ public class DiagnosisListPage extends MainBasePage {
 				
 				Label name = new Label("name", diagnosis.getName());
 				item.add(name);
+				
+				Label patient = new Label("patient", diagnosis.getPatient().getName());
+				item.add(patient);
+				
+				DateFormat df = new SimpleDateFormat("dd/MM/yyyy  HH:mm");
+				Label date = new Label("date", df.format(diagnosis.getCreationDate()));
+				item.add(date);
+				
 				
 				AjaxLink<Void> showButton = new AjaxLink<Void>("showButton") {
 					@Override

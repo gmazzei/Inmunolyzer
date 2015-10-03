@@ -20,9 +20,10 @@ public class ShowPatientPage extends MainBasePage {
 		Integer id = params.get("entityId").toInt();
 		final Patient patient = patientService.getPatient(id);
 		
-		add(new Label("id", patient.getId()));
 		add(new Label("name", patient.getName()));
 		add(new Label("description", patient.getDescription()));
+		add(new Label("totalDiagnoses", patient.getDiagnoses().size()));
+		
 		
 		AjaxLink<Void> editButton = new AjaxLink<Void>("editButton") {
 			@Override
