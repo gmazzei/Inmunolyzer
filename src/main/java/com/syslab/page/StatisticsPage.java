@@ -2,6 +2,7 @@ package com.syslab.page;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -11,6 +12,7 @@ import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
+import org.joda.time.DateTime;
 
 import com.googlecode.wickedcharts.highcharts.options.Axis;
 import com.googlecode.wickedcharts.highcharts.options.ChartOptions;
@@ -46,7 +48,7 @@ public class StatisticsPage extends MainBasePage {
 		
 		
 		
-		Options timelineOptions = buildTimelineChartOptions();
+		Options timelineOptions = buildTimelineChartOptions(null);
 		final Chart timelineChart = new Chart("timelineChart", timelineOptions);
 		chartPanel.add(timelineChart);
 		
@@ -66,8 +68,13 @@ public class StatisticsPage extends MainBasePage {
 			@Override
 			protected void onUpdate(AjaxRequestTarget target) {
 				Patient selectedPatient = (Patient) patientField.getModelObject();
-				Options options = buildResultsChartOptions(selectedPatient);
-				resultsDiagnosisChart.setOptions(options);
+				
+				Options pieOptions = buildResultsChartOptions(selectedPatient);
+				resultsDiagnosisChart.setOptions(pieOptions);
+				
+				Options timelineOptions = buildTimelineChartOptions(selectedPatient);
+				timelineChart.setOptions(timelineOptions);
+				
 				target.add(chartPanel);
 			}
 			
@@ -121,7 +128,9 @@ public class StatisticsPage extends MainBasePage {
 	
 	
 	
-	private Options buildTimelineChartOptions() {
+	private Options buildTimelineChartOptions(Patient patient) {
+		
+		List<Diagnosis> diagnoses = patient == null ? this.loggedUser.getDiagnoses() : patient.getDiagnoses();
 		
 		Options options = new Options();
 		options.setChartOptions(new ChartOptions(SeriesType.LINE));
@@ -151,21 +160,52 @@ public class StatisticsPage extends MainBasePage {
 		options.setLegend(legend);
 
 		Series<Number> series1 = new SimpleSeries();
-		series1.setName("Positive");
-		series1.setData(Arrays.asList(new Number[] { 7, 6, 9, 14, 18, 21, 25, 26, 23, 18, 13, 9 }));
+		series1.setName("High");
+		series1.setColor(new HighchartsColor(3));
+		series1.setData(getMonthlyCount(diagnoses, 70.0, 100.0));
 		options.addSeries(series1);
 
 		Series<Number> series2 = new SimpleSeries();
-		series2.setName("Negative");
-		series2.setData(Arrays.asList(new Number[] { 2, 5, 14, 6, 4, 2, 4, 17, 2, 4, 6, 2 }));
+		series2.setName("Medium");
+		series2.setColor(new HighchartsColor(1));
+		series2.setData(getMonthlyCount(diagnoses, 30.0, 70.0));
 		options.addSeries(series2);
 
 		Series<Number> series3 = new SimpleSeries();
-		series3.setName("Total");
-		series3.setData(Arrays.asList(new Number[] { 9, 11, 23, 20, 22, 33, 40, 37, 44, 40, 26, 25 }));
+		series3.setName("Low");
+		series3.setColor(new HighchartsColor(2));
+		series3.setData(getMonthlyCount(diagnoses, 0.0, 30.0));
 		options.addSeries(series3);
 		
+		Series<Number> series4 = new SimpleSeries();
+		series4.setName("Total");
+		series4.setColor(new HighchartsColor(4));
+		series4.setData(getMonthlyCount(diagnoses, 0.0, 100.0));
+		options.addSeries(series4);
+		
 		return options;
+	}
+	
+	private List<Number> getMonthlyCount(List<Diagnosis> diagnoses, Double min, Double max) {
+		Integer actualYear = new DateTime().getYear();
+		Integer actualMonth = new DateTime().getMonthOfYear();
+		
+		int size = actualMonth;
+		Number[] count = new Integer[size];
+		Arrays.fill(count, 0);
+		
+		for (Diagnosis diagnosis : diagnoses) {
+			DateTime diagnosisDate = new DateTime(diagnosis.getCreationDate());
+			Integer year = diagnosisDate.getYear();
+			Integer month = diagnosisDate.getMonthOfYear();
+			
+			if (year.equals(actualYear) && min <= diagnosis.getResult() && diagnosis.getResult() < max) {
+				count[month-1] = count[month-1].intValue() + 1;
+			}
+		}
+		
+		List<Number> monthlyCount = Arrays.asList(count);
+		return monthlyCount;
 	}
 	
 }
