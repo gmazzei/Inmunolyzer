@@ -81,7 +81,7 @@ public class ImageAnalisisPage extends MainBasePage {
 				try {					
 					Diagnosis diagnosis = (Diagnosis) form.getModelObject();
 					byte[] bytes = fileUploader.getFileUpload().getBytes();
-					Image image = ImageIO.read(new ByteArrayInputStream(bytes));
+					BufferedImage image = ImageIO.read(new ByteArrayInputStream(bytes));
 					
 					AnalisisResult analisisResult = imageAnalizer.analize(image);
 					diagnosis.setResult(analisisResult.getBadCellPercentage().doubleValue());

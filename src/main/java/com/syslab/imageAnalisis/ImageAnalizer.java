@@ -27,8 +27,8 @@ public class ImageAnalizer {
 	private void setupOpenCV() {
 		try {
 			addFiles("openCV/lib");
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
 	}
 	
@@ -42,15 +42,13 @@ public class ImageAnalizer {
 		}
 	}
 	
-	public AnalisisResult analize(Image image) {
+	public AnalisisResult analize(BufferedImage image) {
 		
-		BufferedImage original = (BufferedImage) image;
-		BufferedImage transformed = ImageUtils.deepCopy(original);
+		Map<String, Object> resultMap = this.getAnalisisResults(image);
 		
-		Map<String, Integer> cellCount = this.getAnalisisResults(transformed);
-		
-		Integer goodCells = cellCount.get("goodCellCount");
-		Integer badCells = cellCount.get("badCellCount");
+		BufferedImage transformedImage = (BufferedImage) resultMap.get("transformedImage");
+		Integer goodCells = (Integer) resultMap.get("goodCellCount");
+		Integer badCells = (Integer) resultMap.get("badCellCount");
 		Integer totalCells = goodCells + badCells;
 		
 		AnalisisResult result = new AnalisisResult();
@@ -59,13 +57,13 @@ public class ImageAnalizer {
 		result.setGoodCellPercentage(goodCells * 100.0 / totalCells);
 		result.setBadCellPercentage(badCells * 100.0 / totalCells);
 		result.setOriginalImage(image);
-		result.setTransformedImage(transformed);
+		result.setTransformedImage(transformedImage);
 		
 		return result;
 	}
 
 	
-	private Map<String, Integer> getAnalisisResults(BufferedImage image) {
+	private Map<String, Object> getAnalisisResults(BufferedImage image) {
 	    Mat src = ImageUtils.toMat(image);
 	    
 	    Mat hsvsrc = new Mat();
@@ -77,12 +75,16 @@ public class ImageAnalizer {
 	    Core.inRange(hsvsrc, LOW_BAD_CELL, HIGH_BAD_CELL, badCellFilter);
 	    Core.inRange(hsvsrc, LOW_GOOD_CELL, HIGH_GOOD_CELL, goodCellFilter);
 	    
+	    BufferedImage transformedImage = ImageUtils.toBufferedImage(badCellFilter);
+	    
+	    
 	    Integer nonZeroBadCell = Core.countNonZero(badCellFilter);
 	    Integer nonZeroGoodCell = Core.countNonZero(goodCellFilter);
 	    
-		HashMap<String, Integer> map = new HashMap<String, Integer>();
+		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("goodCellCount", nonZeroGoodCell);
-		map.put("badCellCount", nonZeroBadCell);		
+		map.put("badCellCount", nonZeroBadCell);
+		map.put("transformedImage", transformedImage);
 		return map;
 	}	
 	

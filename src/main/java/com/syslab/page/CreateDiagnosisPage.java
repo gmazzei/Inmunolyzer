@@ -1,6 +1,7 @@
 package com.syslab.page;
 
 import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -115,7 +116,7 @@ public class CreateDiagnosisPage extends MainBasePage {
 				try {					
 					Diagnosis diagnosis = (Diagnosis) form.getModelObject();
 					byte[] bytes = fileUploader.getFileUpload().getBytes();
-					Image image = ImageIO.read(new ByteArrayInputStream(bytes));
+					BufferedImage image = ImageIO.read(new ByteArrayInputStream(bytes));
 					
 					AnalisisResult analisisResult = imageAnalizer.analize(image);
 					diagnosis.setResult(analisisResult.getBadCellPercentage());
