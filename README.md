@@ -37,5 +37,5 @@ git clone git@github.com:gmazzei/Inmunolyzer.git
 6) Copiar fuentes de OpenCV
 <br/>
 
-7) Ingresar desde el browser:  
+7) Ingresar desde el browser  
 <p>URL: <a href="http://localhost:8080">http://localhost:8080</a></p>
