@@ -1,34 +1,41 @@
 # Inmunolyzer
 
-Pasos para levantar el proyecto localmente:
+<<INSTALLATION GUIDE UNDER CONSTRUCTION>>
 
-1) Clonar el repositorio:
+### Guía de instalación
 
-<code>git clone git@github.com:gmazzei/Inmunolyzer.git</code>
+Requisitos del sistema:
 
-2) Ingresar al directorio
+1) OpenCV
 
-<code>cd Inmunolyzer</code>
+<br/>
 
-3) Levantar Jetty
+2) MySQL
 
-<code>mvn jetty:run</code>
+Reemplazar USER y PASSWORD por valores definidos por el usuario.
 
-4) Ingresar desde el browser:  
+<pre>
+sudo apt-get install mysql-server-5.6
+mysql -uroot -p
+SET PASSWORD FOR 'xxxx'@'localhost' = PASSWORD('xxxx'); 
+</pre>
+<p>Ahora debemos correr el archivo ScriptDB.sql y estaremos listos para levantar el sistema con base de datos.</p>
+<br/>
 
-<a href="http://localhost:8080">http://localhost:8080</a>
+3) Maven
+<br/>
 
---
+4) Git
+<br/>
 
+5) Clonar repositorio
+<pre>
+git clone git@github.com:gmazzei/Inmunolyzer.git
+</pre>
+<br/>
 
-<h4>Notas adicionales</h4>
-Pasos para instalar MySQL en Linux:
+6) Copiar fuentes de OpenCV
+<br/>
 
-<code>sudo apt-get install mysql-server-5.6</code>
-<br>
-<code>mysql -uroot -p</code>
-<br>
-<code>SET PASSWORD FOR 'xxxx'@'localhost' = PASSWORD('xxxx');</code> (Según el usuario y password que quieran usar)
-<br>
-
-Ahora debemos correr el archivo ScriptDB.sql y estaremos listos para levantar el sistema con base de datos.
+7) Ingresar desde el browser:  
+<p>Ingresar a <a href="http://localhost:8080">http://localhost:8080</a></p>
