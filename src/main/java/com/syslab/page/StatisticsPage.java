@@ -2,16 +2,16 @@ package com.syslab.page;
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
-import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
 import org.joda.time.DateTime;
 
 import com.googlecode.wickedcharts.highcharts.options.Axis;
@@ -35,22 +35,32 @@ import com.syslab.entity.Diagnosis;
 import com.syslab.entity.Patient;
 
 public class StatisticsPage extends MainBasePage {
-		
+	
+	private Patient selectedPatient; 
+	
 	public StatisticsPage() {
 		
-		final WebMarkupContainer chartPanel = new WebMarkupContainer("chartPanel");
-		chartPanel.setOutputMarkupId(true);
-		this.add(chartPanel);
+		final WebMarkupContainer generalContainer = new WebMarkupContainer("generalContainer");
+		generalContainer.setOutputMarkupId(true);
+		add(generalContainer);
 		
-		Options pieOptions = buildResultsChartOptions(null);
-		final Chart resultsDiagnosisChart = new Chart("resultsChart", pieOptions);
+		final WebMarkupContainer chartPanel = new WebMarkupContainer("chartPanel");
+		chartPanel.setVisible(false);
+		chartPanel.setOutputMarkupId(true);
+		generalContainer.add(chartPanel);
+		
+		final Label noDiagnosesFoundMessage = new Label("noDiagnosesFoundMessage", "No diagnoses found.");
+		noDiagnosesFoundMessage.setVisible(false);
+		noDiagnosesFoundMessage.setOutputMarkupPlaceholderTag(true);
+		generalContainer.add(noDiagnosesFoundMessage);
+		
+		
+		final Chart resultsDiagnosisChart = new Chart("resultsChart", new Options());
 		chartPanel.add(resultsDiagnosisChart);
 		
-		
-		
-		Options timelineOptions = buildTimelineChartOptions(null);
-		final Chart timelineChart = new Chart("timelineChart", timelineOptions);
+		final Chart timelineChart = new Chart("timelineChart", new Options());
 		chartPanel.add(timelineChart);
+		
 		
 		IModel<List<Patient>> patientModel = new LoadableDetachableModel<List<Patient>>() {
 
@@ -61,8 +71,8 @@ public class StatisticsPage extends MainBasePage {
 			
 		};
 		
-		final DropDownChoice<Patient> patientField = new DropDownChoice<Patient>("patient", patientModel);
-		patientField.setModel(Model.of(new Patient()));
+		final DropDownChoice<Patient> patientField = new DropDownChoice<Patient>("patient", new PropertyModel(this, "selectedPatient"), patientModel);
+
 		patientField.add(new AjaxFormComponentUpdatingBehavior("onchange") {
 			
 			@Override
@@ -75,20 +85,29 @@ public class StatisticsPage extends MainBasePage {
 				Options timelineOptions = buildTimelineChartOptions(selectedPatient);
 				timelineChart.setOptions(timelineOptions);
 				
-				target.add(chartPanel);
+				boolean isVisible = isChartVisible(selectedPatient);
+				
+				chartPanel.setVisible(isVisible);
+				noDiagnosesFoundMessage.setVisible(!isVisible);
+				
+				target.add(generalContainer);
 			}
 			
 		});
 		
-		this.add(patientField);
+		generalContainer.add(patientField);
 		
+	}
+	
+	private boolean isChartVisible(Patient patient) {
+		return patient != null && patient.getDiagnoses() != null && !patient.getDiagnoses().isEmpty();
 	}
 	
 	
 
 	private Options buildResultsChartOptions(Patient patient) {
 		
-		List<Diagnosis> diagnoses = patient == null ? this.loggedUser.getDiagnoses() : patient.getDiagnoses();
+		List<Diagnosis> diagnoses = patient.getDiagnoses();
 		Double high = getDiagnosesPercentage(diagnoses, 70.0, 100.0);
 		Double medium = getDiagnosesPercentage(diagnoses, 30.0, 70.0);
 		Double low = getDiagnosesPercentage(diagnoses, 0.0, 30.0);
