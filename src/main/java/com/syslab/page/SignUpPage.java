@@ -12,6 +12,7 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import com.syslab.component.validator.UsernameValidator;
 import com.syslab.entity.User;
 import com.syslab.service.LoginService;
 import com.syslab.service.UserService;
@@ -41,6 +42,7 @@ public class SignUpPage extends LoginBasePage {
 		
 		RequiredTextField<String> username = new RequiredTextField<String>("username");
 		username.setLabel(Model.of("Username"));
+		username.add(new UsernameValidator(userService));
 		form.add(username);
 		
 		PasswordTextField password = new PasswordTextField("password");

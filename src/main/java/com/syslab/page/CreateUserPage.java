@@ -16,6 +16,7 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.syslab.component.Noty;
+import com.syslab.component.validator.UsernameValidator;
 import com.syslab.entity.User;
 import com.syslab.service.UserService;
 
@@ -42,6 +43,7 @@ public class CreateUserPage extends MainBasePage {
 		
 		final RequiredTextField<String> username = new RequiredTextField<String>("username");
 		username.setLabel(Model.of("Username"));
+		username.add(new UsernameValidator(userService));
 		form.add(username);
 		
 		final PasswordTextField password = new PasswordTextField("password");

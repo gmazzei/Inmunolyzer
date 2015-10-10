@@ -1,6 +1,5 @@
 package com.syslab.imageAnalisis;
 
-import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.HashMap;
@@ -75,11 +74,10 @@ public class ImageAnalizer {
 	    Core.inRange(hsvsrc, LOW_BAD_CELL, HIGH_BAD_CELL, badCellFilter);
 	    Core.inRange(hsvsrc, LOW_GOOD_CELL, HIGH_GOOD_CELL, goodCellFilter);
 	    
-	    BufferedImage transformedImage = ImageUtils.toBufferedImage(badCellFilter);
-	    
-	    
 	    Integer nonZeroBadCell = Core.countNonZero(badCellFilter);
 	    Integer nonZeroGoodCell = Core.countNonZero(goodCellFilter);
+	    
+	    BufferedImage transformedImage = ImageUtils.toBufferedImage(badCellFilter);
 	    
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("goodCellCount", nonZeroGoodCell);
