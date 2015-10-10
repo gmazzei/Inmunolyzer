@@ -1,18 +1,18 @@
 # Inmunolyzer
 
-<<INSTALLATION GUIDE UNDER CONSTRUCTION>>
+INSTALLATION GUIDE UNDER CONSTRUCTION
 
 ### Guía de instalación
 
 Requisitos del sistema:
+<br/>
 
 1) OpenCV
-
 <br/>
 
 2) MySQL
 
-Reemplazar USER y PASSWORD por valores definidos por el usuario.
+<p>Reemplazar USER y PASSWORD por valores definidos por el usuario.</p>
 
 <pre>
 sudo apt-get install mysql-server-5.6
@@ -38,4 +38,4 @@ git clone git@github.com:gmazzei/Inmunolyzer.git
 <br/>
 
 7) Ingresar desde el browser:  
-<p>Ingresar a <a href="http://localhost:8080">http://localhost:8080</a></p>
+<p>URL: <a href="http://localhost:8080">http://localhost:8080</a></p>
