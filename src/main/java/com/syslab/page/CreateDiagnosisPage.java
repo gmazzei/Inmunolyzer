@@ -1,6 +1,5 @@
 package com.syslab.page;
 
-import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
@@ -26,6 +25,7 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.syslab.component.Noty;
+import com.syslab.component.validator.ImageValidator;
 import com.syslab.entity.Diagnosis;
 import com.syslab.entity.Patient;
 import com.syslab.entity.Technique;
@@ -106,6 +106,7 @@ public class CreateDiagnosisPage extends MainBasePage {
 		fileUploader.setOutputMarkupId(true);
 		fileUploader.setRequired(true);
 		fileUploader.setLabel(Model.of("Image"));
+		fileUploader.add(new ImageValidator());
 		form.add(fileUploader);
 		
 		

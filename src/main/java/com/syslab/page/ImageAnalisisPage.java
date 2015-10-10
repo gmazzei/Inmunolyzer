@@ -27,6 +27,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.google.gson.Gson;
 import com.syslab.component.Noty;
+import com.syslab.component.validator.ImageValidator;
 import com.syslab.entity.Diagnosis;
 import com.syslab.entity.Technique;
 import com.syslab.imageAnalisis.AnalisisResult;
@@ -70,6 +71,7 @@ public class ImageAnalisisPage extends MainBasePage {
 		final FileUploadField fileUploader = new FileUploadField("image", fileUploadModel);
 		fileUploader.setRequired(true);
 		fileUploader.setLabel(Model.of("Image"));
+		fileUploader.add(new ImageValidator());
 		form.add(fileUploader);
 		
 		
