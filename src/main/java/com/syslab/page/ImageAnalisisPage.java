@@ -1,6 +1,5 @@
 package com.syslab.page;
 
-import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
@@ -15,14 +14,12 @@ import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.upload.FileUpload;
 import org.apache.wicket.markup.html.form.upload.FileUploadField;
-import org.apache.wicket.markup.html.image.resource.BufferedDynamicImageResource;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.apache.wicket.request.resource.DynamicImageResource;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.google.gson.Gson;
@@ -32,6 +29,7 @@ import com.syslab.entity.Diagnosis;
 import com.syslab.entity.Technique;
 import com.syslab.imageAnalisis.AnalisisResult;
 import com.syslab.imageAnalisis.ImageAnalizer;
+import com.syslab.imageAnalisis.RestImageAnalyzer;
 
 public class ImageAnalisisPage extends MainBasePage {
 		

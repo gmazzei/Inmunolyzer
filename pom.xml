@@ -48,12 +48,15 @@
 		<wtp.version>none</wtp.version>
 	</properties>
 	<dependencies>
+		
 		<!--  WICKET DEPENDENCIES -->
+		
 		<dependency>
 			<groupId>org.apache.wicket</groupId>
 			<artifactId>wicket-core</artifactId>
 			<version>${wicket.version}</version>
 		</dependency>
+		
 		<!-- OPTIONAL DEPENDENCY
 		<dependency>
 			<groupId>org.apache.wicket</groupId>
@@ -63,6 +66,7 @@
 		-->
 
 		<!-- LOGGING DEPENDENCIES - LOG4J -->
+		
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
@@ -75,6 +79,7 @@
 		</dependency>
 
 		<!--  JUNIT DEPENDENCY FOR TESTING -->
+		
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
@@ -83,6 +88,7 @@
 		</dependency>
 
 		<!--  JETTY DEPENDENCIES FOR TESTING  -->
+		
 		<dependency>
 			<groupId>org.eclipse.jetty.aggregate</groupId>
 			<artifactId>jetty-all-server</artifactId>
@@ -91,6 +97,7 @@
 		</dependency>
 		
 		<!-- SPRING DEPENDENCIES -->
+		
 		<dependency>
 			<groupId>org.apache.wicket</groupId>
 			<artifactId>wicket-spring</artifactId>
@@ -123,6 +130,7 @@
 		
 		
 		<!-- PERSISTENCE -->
+		
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
@@ -142,6 +150,7 @@
 		</dependency>
 		
 		<!-- SPRING SECURITY -->
+		
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-web</artifactId>
@@ -195,13 +204,6 @@
 			<groupId>joda-time</groupId>
 			<artifactId>joda-time</artifactId>
 			<version>2.8.2</version>
-		</dependency>
-		
-		<!-- Wicket CDI -->
-		<dependency>
-			<groupId>net.ftlines.wicket-cdi</groupId>
-			<artifactId>wicket-cdi</artifactId>
-			<version>1.2</version>
 		</dependency>
 		
 	</dependencies>

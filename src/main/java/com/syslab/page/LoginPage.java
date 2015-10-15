@@ -64,8 +64,6 @@ public class LoginPage extends LoginBasePage {
 		form.add(new BookmarkablePageLink<SignUpPage>("signUpButton", SignUpPage.class));
 		
 		form.add(submitButton);
-		
-		
 	}
 	
 }

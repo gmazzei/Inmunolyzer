@@ -7,6 +7,7 @@ import java.awt.image.WritableRaster;
 
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
+import org.springframework.security.crypto.codec.Base64;
 
 public class ImageUtils {
 	
@@ -36,6 +37,14 @@ public class ImageUtils {
     	byte[] pixels = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
     	mat.put(0, 0, pixels);
     	return mat;
+    }
+    
+    public static byte[] decode(String string) {
+		return Base64.decode(string.getBytes()); 
+    }
+    
+    public static String encode(byte[] bytes) {
+    	return new String(Base64.encode(bytes));
     }
 	
 }
