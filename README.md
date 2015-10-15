@@ -2,12 +2,24 @@
 
 ### Guía de instalación
 
-1) OpenCV
-
 UNDER CONSTRUCTION...
 <div>
 <img src="http://www.gardeningwithmicrobes.com/images/under-construction.jpg" height="62" width="62">
 </div>
+
+
+1) OpenCV
+
+<pre>
+cd ~
+git clone git://github.com/Itseez/opencv.git
+cd opencv
+mkdir build
+cd build
+cmake -G "Unix Makefiles" -D CMAKE_CXX_COMPILER=/usr/bin/g++ -D CMAKE_C_COMPILER=/usr/bin/gcc -D WITH_CUDA=ON .. 
+make -j4 
+make install
+</pre>
 <br/>
 
 2) MySQL
@@ -17,9 +29,7 @@ sudo apt-get install mysql-server-5.6
 mysql -u root -p
 CREATE DATABASE InmunolyzerDB;
 use InmunolyzerDB;
-</pre>
-<p>Ahora debemos copiar el contenido de ScriptDB.sql, pegarlo en la terminal y ejecutarlo.</p>
-<pre>
+<strong>Ahora debemos copiar el contenido de ScriptDB.sql, pegarlo en la terminal y ejecutarlo.</strong>
 exit
 </pre>
 
@@ -27,12 +37,12 @@ exit
 
 3) Clonar repositorio
 <pre>
-cd
+cd ~
 git clone git@github.com:gmazzei/Inmunolyzer.git
 </pre>
 <br/>
 
-6) Copiar archivos de OpenCV
+6) Reemplazar archivos de OpenCV dentro de Inmunolyzer
 <pre>
 rm Inmunolyzer/openCV/lib/*.so
 rm Inmunolyzer/openCV/repo/syslab-remote/opencv/3.0.0/opencv-300.jar
@@ -44,7 +54,6 @@ cp opencv/build/bin/opencv-300.jar Inmunolyzer/openCV/repo/syslab-remote/opencv/
 7) Levantar Jetty (application server)
 
 <pre>
-cd
 cd Inmunolyzer
 mvn jetty:run
 </pre>
