@@ -1,15 +1,13 @@
 # Inmunolyzer
 
-INSTALLATION GUIDE UNDER CONSTRUCTION
-
 ### Guía de instalación
-
-Requisitos del sistema:
-<br/>
 
 1) OpenCV
 
-
+UNDER CONSTRUCTION...
+<div>
+<img src="http://www.gardeningwithmicrobes.com/images/under-construction.jpg" height="62" width="62">
+</div>
 <br/>
 
 2) MySQL
