@@ -1,12 +1,7 @@
 # Inmunolyzer
 
 ### Guía de instalación
-
-UNDER CONSTRUCTION...
-<div>
-<img src="http://www.gardeningwithmicrobes.com/images/under-construction.jpg" height="62" width="62">
-</div>
-
+<br>
 
 1) OpenCV
 
