@@ -1,7 +1,9 @@
 # Inmunolyzer
 
+<img src="Caratula.jpg" height="80%" width="80%">
+<br/><br/><br/>
+
 ### Guía de instalación
-<br>
 
 1) OpenCV
 
