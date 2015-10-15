@@ -1,34 +1,57 @@
 # Inmunolyzer
 
-Pasos para levantar el proyecto localmente:
-
-1) Clonar el repositorio:
-
-<code>git clone git@github.com:gmazzei/Inmunolyzer.git</code>
-
-2) Ingresar al directorio
-
-<code>cd Inmunolyzer</code>
-
-3) Levantar Jetty
-
-<code>mvn jetty:run</code>
-
-4) Ingresar desde el browser:  
-
-<a href="http://localhost:8080">http://localhost:8080</a>
-
---
-
-
-<h4>Notas adicionales</h4>
-Pasos para instalar MySQL en Linux:
-
-<code>sudo apt-get install mysql-server-5.6</code>
-<br>
-<code>mysql -uroot -p</code>
-<br>
-<code>SET PASSWORD FOR 'xxxx'@'localhost' = PASSWORD('xxxx');</code> (Según el usuario y password que quieran usar)
+### Guía de instalación
 <br>
 
-Ahora debemos correr el archivo ScriptDB.sql y estaremos listos para levantar el sistema con base de datos.
+1) OpenCV
+
+<pre>
+cd ~
+git clone git://github.com/Itseez/opencv.git
+cd opencv
+mkdir build
+cd build
+cmake -G "Unix Makefiles" -D CMAKE_CXX_COMPILER=/usr/bin/g++ -D CMAKE_C_COMPILER=/usr/bin/gcc -D WITH_CUDA=ON .. 
+make -j4 
+make install
+</pre>
+<br/>
+
+2) MySQL
+
+<pre>
+sudo apt-get install mysql-server-5.6
+mysql -u root -p
+CREATE DATABASE InmunolyzerDB;
+use InmunolyzerDB;
+<strong>Ahora debemos copiar el contenido de ScriptDB.sql, pegarlo en la terminal y ejecutarlo.</strong>
+exit
+</pre>
+
+<br/>
+
+3) Clonar repositorio
+<pre>
+cd ~
+git clone git@github.com:gmazzei/Inmunolyzer.git
+</pre>
+<br/>
+
+6) Reemplazar archivos de OpenCV dentro de Inmunolyzer
+<pre>
+rm Inmunolyzer/openCV/lib/*.so
+rm Inmunolyzer/openCV/repo/syslab-remote/opencv/3.0.0/opencv-300.jar
+cp opencv/build/lib/*.so Inmunolyzer/openCV/lib/
+cp opencv/build/bin/opencv-300.jar Inmunolyzer/openCV/repo/syslab-remote/opencv/3.0.0/
+</pre>
+<br/>
+
+7) Levantar Jetty (application server)
+
+<pre>
+cd Inmunolyzer
+mvn jetty:run
+</pre>
+
+8) Ingresar desde el browser  
+<p>URL: <a href="http://localhost:8080">http://localhost:8080</a></p>
