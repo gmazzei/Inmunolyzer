@@ -34,9 +34,10 @@ git clone git@github.com:gmazzei/Inmunolyzer.git
 
 6) Copiar archivos de OpenCV
 <pre>
-cd opencv/build/
-cp lib/*.so ~/Inmunolyzer/openCV/lib/
-cp bin/opencv-300.jar ~/Inmunolyzer/openCV/repo/syslab-remote/opencv/3.0.0/
+rm Inmunolyzer/openCV/lib/*.so
+rm Inmunolyzer/openCV/repo/syslab-remote/opencv/3.0.0/opencv-300.jar
+cp opencv/build/lib/*.so ~/Inmunolyzer/openCV/lib/
+cp opencv/build/bin/opencv-300.jar ~/Inmunolyzer/openCV/repo/syslab-remote/opencv/3.0.0/
 </pre>
 <br/>
 
