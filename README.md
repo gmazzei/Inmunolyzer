@@ -36,8 +36,8 @@ git clone git@github.com:gmazzei/Inmunolyzer.git
 <pre>
 rm Inmunolyzer/openCV/lib/*.so
 rm Inmunolyzer/openCV/repo/syslab-remote/opencv/3.0.0/opencv-300.jar
-cp opencv/build/lib/*.so ~/Inmunolyzer/openCV/lib/
-cp opencv/build/bin/opencv-300.jar ~/Inmunolyzer/openCV/repo/syslab-remote/opencv/3.0.0/
+cp opencv/build/lib/*.so Inmunolyzer/openCV/lib/
+cp opencv/build/bin/opencv-300.jar Inmunolyzer/openCV/repo/syslab-remote/opencv/3.0.0/
 </pre>
 <br/>
 
