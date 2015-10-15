@@ -8,34 +8,47 @@ Requisitos del sistema:
 <br/>
 
 1) OpenCV
+
+
 <br/>
 
 2) MySQL
 
-<p>Reemplazar USER y PASSWORD por valores definidos por el usuario.</p>
-
 <pre>
 sudo apt-get install mysql-server-5.6
-mysql -uroot -p
-SET PASSWORD FOR 'xxxx'@'localhost' = PASSWORD('xxxx'); 
+mysql -u root -p
+CREATE DATABASE InmunolyzerDB;
+use InmunolyzerDB;
 </pre>
-<p>Ahora debemos correr el archivo ScriptDB.sql y estaremos listos para levantar el sistema con base de datos.</p>
-<br/>
-
-3) Maven
-<br/>
-
-4) Git
-<br/>
-
-5) Clonar repositorio
+<p>Ahora debemos copiar el contenido de ScriptDB.sql, pegarlo en la terminal y ejecutarlo.</p>
 <pre>
+exit
+</pre>
+
+<br/>
+
+3) Clonar repositorio
+<pre>
+cd
 git clone git@github.com:gmazzei/Inmunolyzer.git
 </pre>
 <br/>
 
-6) Copiar fuentes de OpenCV
+6) Copiar archivos de OpenCV
+<pre>
+cd opencv/build/
+cp lib/*.so ~/Inmunolyzer/openCV/lib/
+cp bin/opencv-300.jar ~/Inmunolyzer/openCV/repo/syslab-remote/opencv/3.0.0/
+</pre>
 <br/>
 
-7) Ingresar desde el browser  
+7) Levantar Jetty (application server)
+
+<pre>
+cd
+cd Inmunolyzer
+mvn jetty:run
+</pre>
+
+8) Ingresar desde el browser  
 <p>URL: <a href="http://localhost:8080">http://localhost:8080</a></p>
