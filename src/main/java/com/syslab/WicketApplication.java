@@ -49,7 +49,7 @@ public class WicketApplication extends AuthenticatedWebApplication {
 		mountPage("LoginPage", LoginPage.class);
 		mountPage("SignUpPage", SignUpPage.class);
 		mountPage("BasePage", MainBasePage.class);
-		mountPage("ImageAnalisisPage", ImageAnalysisPage.class);
+		mountPage("ImageAnalysisPage", ImageAnalysisPage.class);
 		mountPage("ImageDetailsPage", ImageDetailsPage.class);
 		mountPage("DiagnosisListPage", DiagnosisListPage.class);
 		mountPage("ShowDiagnosisPage", ShowDiagnosisPage.class);

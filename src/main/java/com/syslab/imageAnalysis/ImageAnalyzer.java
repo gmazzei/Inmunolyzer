@@ -6,8 +6,6 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.imageio.ImageIO;
-
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.Scalar;
@@ -72,13 +70,6 @@ public class ImageAnalyzer {
 
 	
 	private Map<String, Object> getAnalysisResults(BufferedImage image) {
-		
-    	try {
-    		File outputfile = new File("openCV/image.jpg");
-    		ImageIO.write(image, "jpg", outputfile);    		
-    	} catch (Exception e) {
-    		throw new RuntimeException(e);
-    	}
     	
 	    Mat src = ImageUtils.toMat(image);
 	    
@@ -90,14 +81,18 @@ public class ImageAnalyzer {
 	    
 	    Imgproc.cvtColor(src, hsvsrc, Imgproc.COLOR_BGR2HSV);	    
 	    filteredMat = colorFilter(hsvsrc);
+	    //filteredMat = highlightCells(filteredMat);
+	    
 	    
 	    Core.inRange(filteredMat, LOW_BAD_CELL, HIGH_BAD_CELL, badCellFilter);
 	    Core.inRange(filteredMat, LOW_GOOD_CELL, HIGH_GOOD_CELL, goodCellFilter);
 	    
 	    Integer nonZeroBadCell = Core.countNonZero(badCellFilter);
 	    Integer nonZeroGoodCell = Core.countNonZero(goodCellFilter);
-
+	    
+	    
 	    //Para pruebas
+	    
 	    /*
 	    Imgcodecs.imwrite("openCV/src.jpg", src);
 	    Imgcodecs.imwrite("openCV/hsvsrc.jpg", hsvsrc);
@@ -122,9 +117,7 @@ public class ImageAnalyzer {
 	private Mat colorFilter(Mat mat) {
 		
 		Map<Color, Color> complementMap = new HashMap<Color, Color>();
-
 		
-				
 		complementMap.put(BACKGROUND, Color.WHITE);
 		complementMap.put(NORMAL_CELL, Color.BLUE);
 		complementMap.put(BAD_CELL, Color.RED);
@@ -167,6 +160,31 @@ public class ImageAnalyzer {
 		int b2 = secondColor.getBlue();
 		
 		return Math.sqrt(Math.pow(r2 - r1, 2) + Math.pow(g2 - g1, 2) + Math.pow(b2 - b1, 2));
+	}
+	
+	
+	//Pinta de verde el borde de las celulas malas
+	private Mat highlightCells(Mat mat) {
+		
+		Color background = Color.WHITE;
+		Color goodCell = Color.BLUE;
+		Color badCell = Color.RED;
+		Color frame = Color.GREEN;
+		
+		BufferedImage image = ImageUtils.toBufferedImage(mat);
+		
+		for (int x = 0; x < image.getWidth(); x++) {
+			for (int y = 0; y < image.getHeight()-1; y++) {
+				Color color = new Color(image.getRGB(x, y));
+				Color nextColor = new Color(image.getRGB(x, y + 1));
+				
+				if ((color.equals(background) || color.equals(goodCell)) && nextColor.equals(badCell)) {
+					image.setRGB(x, y, frame.getRGB());
+				}
+			}
+		}
+		
+		return ImageUtils.toMat(image);
 	}
 	
 }
