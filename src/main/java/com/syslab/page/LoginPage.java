@@ -47,7 +47,7 @@ public class LoginPage extends LoginBasePage {
 				
 				boolean loginSuccessful = loginService.login(username, password);						
 				if (loginSuccessful) {
-					setResponsePage(ImageAnalisysPage.class);					
+					setResponsePage(ImageAnalysisPage.class);					
 				} else {
 					error("Invalid Username or Password");
 					target.add(feedbackPanel);

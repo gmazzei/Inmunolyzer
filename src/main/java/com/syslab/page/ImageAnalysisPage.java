@@ -12,7 +12,6 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.NumberTextField;
 import org.apache.wicket.markup.html.form.upload.FileUpload;
 import org.apache.wicket.markup.html.form.upload.FileUploadField;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
@@ -32,12 +31,12 @@ import com.syslab.imageAnalysis.AnalysisResult;
 import com.syslab.imageAnalysis.ImageAnalyzer;
 import com.syslab.imageAnalysis.ImageUtils;
 
-public class ImageAnalisysPage extends MainBasePage {
+public class ImageAnalysisPage extends MainBasePage {
 		
 	@SpringBean
 	private ImageAnalyzer imageAnalyzer;
 	
-	public ImageAnalisysPage() {
+	public ImageAnalysisPage() {
 		
 		Form<Diagnosis> form = new Form<Diagnosis>("form", new CompoundPropertyModel<Diagnosis>(new Diagnosis()));
 		add(form);

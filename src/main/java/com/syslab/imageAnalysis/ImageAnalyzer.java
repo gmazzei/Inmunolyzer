@@ -11,7 +11,6 @@ import javax.imageio.ImageIO;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.Scalar;
-import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 import org.springframework.stereotype.Service;
 
@@ -107,7 +106,7 @@ public class ImageAnalyzer {
 	    Imgcodecs.imwrite("openCV/badCellFilter.jpg", badCellFilter);
 	    */
 	    
-	    BufferedImage transformedImage = ImageUtils.toBufferedImage(badCellFilter);
+	    BufferedImage transformedImage = ImageUtils.toBufferedImage(filteredMat);
 	    
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("goodCellCount", nonZeroGoodCell);

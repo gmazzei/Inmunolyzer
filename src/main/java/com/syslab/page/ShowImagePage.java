@@ -52,7 +52,7 @@ public class ShowImagePage extends MainBasePage {
 		AjaxLink<ImageDetailsPage> returnButton = new AjaxLink<ImageDetailsPage>("return") {	
 			@Override
 			public void onClick(AjaxRequestTarget target) {
-				setResponsePage(ImageAnalisysPage.class);
+				setResponsePage(ImageAnalysisPage.class);
 			}
 		};
 		

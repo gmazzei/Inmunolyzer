@@ -64,7 +64,7 @@ public class SignUpPage extends LoginBasePage {
 				User user = (User) form.getModelObject();
 				userService.save(user);
 				loginService.login(user.getUsername(), user.getPassword());
-				setResponsePage(ImageAnalisysPage.class);
+				setResponsePage(ImageAnalysisPage.class);
 			}
 
 			@Override

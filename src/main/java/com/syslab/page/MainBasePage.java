@@ -41,7 +41,7 @@ public abstract class MainBasePage extends WebPage {
 	}
 	
 	protected void buildSideBar() {
-		BookmarkablePageLink<ImageAnalisysPage> imageAnalisis = new BookmarkablePageLink<ImageAnalisysPage>("sidebar-image-analisis", ImageAnalisysPage.class);
+		BookmarkablePageLink<ImageAnalysisPage> imageAnalisis = new BookmarkablePageLink<ImageAnalysisPage>("sidebar-image-analisis", ImageAnalysisPage.class);
 		BookmarkablePageLink<DiagnosisListPage> diagnosisList = new BookmarkablePageLink<DiagnosisListPage>("sidebar-diagnosis", DiagnosisListPage.class);
 		BookmarkablePageLink<PatientListPage> patientList = new BookmarkablePageLink<PatientListPage>("sidebar-patient", PatientListPage.class);
 		BookmarkablePageLink<UserListPage> usersList = new BookmarkablePageLink<UserListPage>("sidebar-users", UserListPage.class);
