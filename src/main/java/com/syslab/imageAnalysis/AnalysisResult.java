@@ -1,8 +1,8 @@
-package com.syslab.imageAnalisis;
+package com.syslab.imageAnalysis;
 
 import java.awt.Image;
 
-public class AnalisisResult {
+public class AnalysisResult {
 	
 	private Integer goodCellCount;
 	private Integer badCellCount;

@@ -10,7 +10,7 @@ import com.syslab.page.CreatePatientPage;
 import com.syslab.page.CreateUserPage;
 import com.syslab.page.DiagnosisListPage;
 import com.syslab.page.ErrorPage;
-import com.syslab.page.ImageAnalisisPage;
+import com.syslab.page.ImageAnalisysPage;
 import com.syslab.page.ImageDetailsPage;
 import com.syslab.page.LoginPage;
 import com.syslab.page.MainBasePage;
@@ -49,7 +49,7 @@ public class WicketApplication extends AuthenticatedWebApplication {
 		mountPage("LoginPage", LoginPage.class);
 		mountPage("SignUpPage", SignUpPage.class);
 		mountPage("BasePage", MainBasePage.class);
-		mountPage("ImageAnalisisPage", ImageAnalisisPage.class);
+		mountPage("ImageAnalisisPage", ImageAnalisysPage.class);
 		mountPage("ImageDetailsPage", ImageDetailsPage.class);
 		mountPage("DiagnosisListPage", DiagnosisListPage.class);
 		mountPage("ShowDiagnosisPage", ShowDiagnosisPage.class);

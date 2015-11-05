@@ -12,6 +12,7 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.NumberTextField;
 import org.apache.wicket.markup.html.form.upload.FileUpload;
 import org.apache.wicket.markup.html.form.upload.FileUploadField;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
@@ -27,16 +28,16 @@ import com.syslab.component.Noty;
 import com.syslab.component.validator.ImageValidator;
 import com.syslab.entity.Diagnosis;
 import com.syslab.entity.Technique;
-import com.syslab.imageAnalisis.AnalisisResult;
-import com.syslab.imageAnalisis.ImageAnalizer;
-import com.syslab.imageAnalisis.RestImageAnalyzer;
+import com.syslab.imageAnalysis.AnalysisResult;
+import com.syslab.imageAnalysis.ImageAnalyzer;
+import com.syslab.imageAnalysis.ImageUtils;
 
-public class ImageAnalisisPage extends MainBasePage {
+public class ImageAnalisysPage extends MainBasePage {
 		
 	@SpringBean
-	private ImageAnalizer imageAnalizer;
+	private ImageAnalyzer imageAnalyzer;
 	
-	public ImageAnalisisPage() {
+	public ImageAnalisysPage() {
 		
 		Form<Diagnosis> form = new Form<Diagnosis>("form", new CompoundPropertyModel<Diagnosis>(new Diagnosis()));
 		add(form);
@@ -83,7 +84,7 @@ public class ImageAnalisisPage extends MainBasePage {
 					byte[] bytes = fileUploader.getFileUpload().getBytes();
 					BufferedImage image = ImageIO.read(new ByteArrayInputStream(bytes));
 					
-					AnalisisResult analisisResult = imageAnalizer.analize(image);
+					AnalysisResult analisisResult = imageAnalyzer.analyze(image);
 					diagnosis.setResult(analisisResult.getBadCellPercentage().doubleValue());
 					diagnosis.setGoodCellCount(analisisResult.getGoodCellCount());
 					diagnosis.setBadCellCount(analisisResult.getBadCellCount());
@@ -95,7 +96,12 @@ public class ImageAnalisisPage extends MainBasePage {
 					String entity = gson.toJson(diagnosis);
 					params.add("entity", entity);
 					
-					setResponsePage(new ShowImagePage(params, (BufferedImage) analisisResult.getOriginalImage(), (BufferedImage)analisisResult.getTransformedImage()));
+					byte[] original = ImageUtils.toByteArray(image, "jpg");
+					byte[] transformed = ImageUtils.toByteArray((BufferedImage)analisisResult.getTransformedImage(), "jpg");
+					params.add("original", ImageUtils.encode(original));
+					params.add("transformed", ImageUtils.encode(transformed));
+					
+					setResponsePage(new ShowImagePage(params));
 				} catch (Exception ex) {
 					throw new RuntimeException(ex);
 				}

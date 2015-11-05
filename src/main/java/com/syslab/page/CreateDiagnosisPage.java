@@ -29,8 +29,8 @@ import com.syslab.component.validator.ImageValidator;
 import com.syslab.entity.Diagnosis;
 import com.syslab.entity.Patient;
 import com.syslab.entity.Technique;
-import com.syslab.imageAnalisis.AnalisisResult;
-import com.syslab.imageAnalisis.ImageAnalizer;
+import com.syslab.imageAnalysis.AnalysisResult;
+import com.syslab.imageAnalysis.ImageAnalyzer;
 import com.syslab.service.DiagnosisService;
 
 public class CreateDiagnosisPage extends MainBasePage {
@@ -40,7 +40,7 @@ public class CreateDiagnosisPage extends MainBasePage {
 	private DiagnosisService diagnosisService;
 	
 	@SpringBean
-	private ImageAnalizer imageAnalizer;
+	private ImageAnalyzer imageAnalizer;
 	
 	public CreateDiagnosisPage() {
 		Diagnosis diagnosis = new Diagnosis();
@@ -119,7 +119,7 @@ public class CreateDiagnosisPage extends MainBasePage {
 					byte[] bytes = fileUploader.getFileUpload().getBytes();
 					BufferedImage image = ImageIO.read(new ByteArrayInputStream(bytes));
 					
-					AnalisisResult analisisResult = imageAnalizer.analize(image);
+					AnalysisResult analisisResult = imageAnalizer.analyze(image);
 					diagnosis.setResult(analisisResult.getBadCellPercentage());
 					
 					diagnosis.setPatient(patient.getModelObject());

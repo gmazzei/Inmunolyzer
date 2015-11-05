@@ -1,9 +1,14 @@
-package com.syslab.imageAnalisis;
+package com.syslab.imageAnalysis;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.DataBufferByte;
 import java.awt.image.WritableRaster;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+
+import javax.imageio.ImageIO;
 
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
@@ -33,10 +38,10 @@ public class ImageUtils {
     }
     
     public static Mat toMat(BufferedImage image) {
+    	byte[] data = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
     	Mat mat = new Mat(image.getHeight(), image.getWidth(), CvType.CV_8UC3);
-    	byte[] pixels = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
-    	mat.put(0, 0, pixels);
-    	return mat;
+        mat.put(0, 0, data);
+        return mat;
     }
     
     public static byte[] decode(String string) {
@@ -45,6 +50,31 @@ public class ImageUtils {
     
     public static String encode(byte[] bytes) {
     	return new String(Base64.encode(bytes));
+    }
+    
+    public static byte[] toByteArray(BufferedImage image, String format) {
+    	try {
+    		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    		ImageIO.write(image, format, baos);
+    		baos.flush();
+    		byte[] bytes = baos.toByteArray();
+    		baos.close();
+    		return bytes;	
+		} catch (Exception ex) {
+			throw new RuntimeException(ex);
+		}
+    }
+    
+    public static BufferedImage toImage(byte[] bytes) {
+    	try {
+    		InputStream stream = new ByteArrayInputStream(bytes);
+    		BufferedImage image = ImageIO.read(stream);
+    		return image;
+			
+		} catch (Exception ex) {
+			throw new RuntimeException(ex);
+		}
+    	
     }
 	
 }

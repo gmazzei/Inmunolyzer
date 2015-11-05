@@ -1,4 +1,4 @@
-package com.syslab.imageAnalisis;
+package com.syslab.imageAnalysis;
 
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
@@ -14,7 +14,7 @@ import com.google.gson.JsonObject;
 
 public class RestImageAnalyzer {
 	
-	public AnalisisResult analyze(BufferedImage image) {
+	public AnalysisResult analyze(BufferedImage image) {
 		
 		try {
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();

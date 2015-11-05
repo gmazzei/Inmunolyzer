@@ -17,7 +17,7 @@ public abstract class LoginBasePage extends WebPage {
 	
 	private void controlAccess() {
 		if (loginService.isUserLogged()) {
-			setResponsePage(ImageAnalisisPage.class);
+			setResponsePage(ImageAnalisysPage.class);
 		}
 	}
 	
