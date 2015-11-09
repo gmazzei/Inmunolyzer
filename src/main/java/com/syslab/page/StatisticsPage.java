@@ -207,9 +207,9 @@ public class StatisticsPage extends MainBasePage {
 	
 	private List<Number> getMonthlyCount(List<Diagnosis> diagnoses, Double min, Double max) {
 		Integer actualYear = new DateTime().getYear();
-		Integer actualMonth = new DateTime().getMonthOfYear();
+		//Integer actualMonth = new DateTime().getMonthOfYear();
 		
-		int size = actualMonth;
+		int size = 12;
 		Number[] count = new Integer[size];
 		Arrays.fill(count, 0);
 		

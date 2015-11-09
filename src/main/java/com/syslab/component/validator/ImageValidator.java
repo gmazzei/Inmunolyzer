@@ -10,7 +10,7 @@ import org.apache.wicket.validation.ValidationError;
 
 public class ImageValidator implements IValidator<List<FileUpload>> {
 	
-	private static final List<String> VALID_FORMATS = Arrays.asList(".jpg", ".png");
+	private static final List<String> VALID_FORMATS = Arrays.asList(".jpg");
 	
 	
 	@Override
@@ -20,7 +20,7 @@ public class ImageValidator implements IValidator<List<FileUpload>> {
 		String imageName = upload.getClientFileName();
 		
 		if (!hasValidFormat(imageName)) {
-			error(validatable, "Image must have JPG or PNG format.");
+			error(validatable, "Image must have JPG format.");
 		}
 		
 	}

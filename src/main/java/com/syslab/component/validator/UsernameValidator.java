@@ -19,7 +19,6 @@ public class UsernameValidator implements IValidator<String> {
 	@Override
 	public void validate(IValidatable<String> validatable) {
 		final String username = validatable.getValue();
-		System.out.println("USER SERVICE = " + userService);
 		User user = userService.findByUsername(username);
 		
 		if (user != null) {

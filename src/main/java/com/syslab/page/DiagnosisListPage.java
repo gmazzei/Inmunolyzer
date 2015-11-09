@@ -63,9 +63,12 @@ public class DiagnosisListPage extends MainBasePage {
 				if (StringUtils.isEmpty(name)) {
 					return loggedUser.getDiagnoses();
 				} else {
+					name = name.toLowerCase();
 					List<Diagnosis> list = new ArrayList<Diagnosis>();
 					for (Diagnosis diagnosis : loggedUser.getDiagnoses()) {
-						if (diagnosis.getName().contains(name)) list.add(diagnosis);
+						if (diagnosis.getName().toLowerCase().contains(name) || diagnosis.getPatient().getName().toLowerCase().contains(name)){
+							list.add(diagnosis);
+						} 
 					}
 					return list;
 				}
