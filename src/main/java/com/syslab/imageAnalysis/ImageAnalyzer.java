@@ -10,7 +10,6 @@ import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.Scalar;
 import org.opencv.imgcodecs.Imgcodecs;
-import org.opencv.imgproc.Imgproc;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -21,9 +20,11 @@ public class ImageAnalyzer {
 	private static final Scalar LOW_GOOD_CELL = new Scalar(255,0,0); // BLUE
 	private static final Scalar HIGH_GOOD_CELL = new Scalar(255,0,0); // BLUE
 	
-	private static final Color BACKGROUND = new Color(222, 30, 19);
-	private static final Color NORMAL_CELL = new Color(143, 55, 109);
-	private static final Color BAD_CELL = new Color(71, 111, 166);
+	private static final Color BACKGROUND = new Color(252, 245, 254);
+	private static final Color NORMAL_CELL = new Color(145, 154, 197);
+	private static final Color NORMAL_CELL_2 = new Color(20, 29, 150);
+	private static final Color BAD_CELL = new Color(87, 53, 47);
+	private static final Color BAD_CELL_2 = new Color(162, 142, 148);
 	
 	public ImageAnalyzer() {
 		setupOpenCV();
@@ -74,15 +75,15 @@ public class ImageAnalyzer {
     	
 	    Mat src = ImageUtils.toMat(image);
 	    
-	    Mat hsvsrc = new Mat();
+	    //Mat hsvsrc = new Mat();
 	    Mat filteredMat = new Mat();
 	    Mat badCellFilter = new Mat();
 	    Mat goodCellFilter = new Mat();
 	    
 	    
-	    Imgproc.cvtColor(src, hsvsrc, Imgproc.COLOR_BGR2HSV);	    
-	    filteredMat = colorFilter(hsvsrc);
-	    //filteredMat = highlightCells(filteredMat);
+	    //Imgproc.cvtColor(src, hsvsrc, Imgproc.COLOR_BGR2HSV);
+	    //filteredMat = colorFilter(hsvsrc);
+	    filteredMat = colorFilter(src);
 	    
 	    
 	    Core.inRange(filteredMat, LOW_BAD_CELL, HIGH_BAD_CELL, badCellFilter);
@@ -94,13 +95,13 @@ public class ImageAnalyzer {
 	    
 	    //Para pruebas
 	    
-	    
+	    /*
 	    Imgcodecs.imwrite("openCV/src.jpg", src);
-	    Imgcodecs.imwrite("openCV/hsvsrc.jpg", hsvsrc);
+	    //Imgcodecs.imwrite("openCV/hsvsrc.jpg", hsvsrc);
 	    Imgcodecs.imwrite("openCV/filteredMat.jpg", filteredMat);
 	    Imgcodecs.imwrite("openCV/goodCellFilter.jpg", goodCellFilter);
 	    Imgcodecs.imwrite("openCV/badCellFilter.jpg", badCellFilter);
-	    
+	    */
 	    
 	    BufferedImage transformedImage = ImageUtils.toBufferedImage(filteredMat);
 	    
@@ -121,7 +122,9 @@ public class ImageAnalyzer {
 		
 		complementMap.put(BACKGROUND, Color.WHITE);
 		complementMap.put(NORMAL_CELL, Color.BLUE);
+		complementMap.put(NORMAL_CELL_2, Color.BLUE);
 		complementMap.put(BAD_CELL, Color.RED);
+		complementMap.put(BAD_CELL_2, Color.RED);
 		
 		BufferedImage bufferedImage = ImageUtils.toBufferedImage(mat);
 		
