@@ -9,6 +9,7 @@ import java.util.Map;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.Scalar;
+import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 import org.springframework.stereotype.Service;
 
@@ -93,13 +94,13 @@ public class ImageAnalyzer {
 	    
 	    //Para pruebas
 	    
-	    /*
+	    
 	    Imgcodecs.imwrite("openCV/src.jpg", src);
 	    Imgcodecs.imwrite("openCV/hsvsrc.jpg", hsvsrc);
 	    Imgcodecs.imwrite("openCV/filteredMat.jpg", filteredMat);
 	    Imgcodecs.imwrite("openCV/goodCellFilter.jpg", goodCellFilter);
 	    Imgcodecs.imwrite("openCV/badCellFilter.jpg", badCellFilter);
-	    */
+	    
 	    
 	    BufferedImage transformedImage = ImageUtils.toBufferedImage(filteredMat);
 	    

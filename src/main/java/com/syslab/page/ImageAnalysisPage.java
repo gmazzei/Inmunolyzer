@@ -39,6 +39,7 @@ public class ImageAnalysisPage extends MainBasePage {
 	public ImageAnalysisPage() {
 		
 		Form<Diagnosis> form = new Form<Diagnosis>("form", new CompoundPropertyModel<Diagnosis>(new Diagnosis()));
+		form.setMultiPart(true);
 		add(form);
 		
 		final FeedbackPanel feedbackPanel = new FeedbackPanel("feedbackPanel");
